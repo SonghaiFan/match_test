@@ -1,0 +1,154 @@
+{
+  "testType": "health",
+  "app": {
+    "title": "健康生活测试",
+    "subtitle": "评估你的健康生活习惯"
+  },
+  "ui": {
+    "startScreen": {
+      "title": "欢迎参加健康生活测试",
+      "description": [
+        "本测试将帮助你了解自己的健康生活习惯，包括饮食、运动、睡眠和心理健康。",
+        "请根据你的真实情况作答，测试结果仅供参考。"
+      ],
+      "startButton": "开始测试"
+    },
+    "navigation": {
+      "nextButton": "下一题",
+      "prevButton": "上一题"
+    },
+    "results": {
+      "title": "测试结果",
+      "subtitle": "以下是你的健康生活测试结果",
+      "exportButton": "保存结果",
+      "restartButton": "重新测试"
+    }
+  },
+  "theme": {
+    "categories": {
+      "diet": {
+        "name": "饮食习惯",
+        "color": "#4caf50",
+        "description": "你的日常饮食结构和健康程度"
+      },
+      "exercise": {
+        "name": "运动习惯",
+        "color": "#2196f3",
+        "description": "你的运动频率和锻炼方式"
+      },
+      "sleep": {
+        "name": "睡眠质量",
+        "color": "#ff9800",
+        "description": "你的作息规律和睡眠状况"
+      },
+      "mental": {
+        "name": "心理健康",
+        "color": "#9c27b0",
+        "description": "你的情绪管理和心理状态"
+      }
+    }
+  },
+  "export": {
+    "filename": "我的健康生活测试结果",
+    "template": {
+      "header": "=== {title} ===\n\n",
+      "category": "\n【{category}】\n{separator}\n",
+      "question": "问题：{question}\n答案：{answer}. {answerText}\n\n",
+      "separator": "="
+    }
+  },
+  "questions": [
+    {
+      "category": "diet",
+      "questions": [
+        {
+          "question": "你每天通常吃几顿蔬菜水果？",
+          "options": {
+            "A": "三顿都吃，且分量充足",
+            "B": "一天一两顿会吃",
+            "C": "偶尔吃",
+            "D": "几乎不吃"
+          }
+        },
+        {
+          "question": "你平时饮食偏好是？",
+          "options": {
+            "A": "清淡均衡，少油少盐",
+            "B": "喜欢重口味或油炸食品",
+            "C": "经常外卖快餐",
+            "D": "无特别偏好"
+          }
+        }
+      ]
+    },
+    {
+      "category": "exercise",
+      "questions": [
+        {
+          "question": "你每周运动的频率是？",
+          "options": {
+            "A": "每周5次及以上",
+            "B": "每周3-4次",
+            "C": "每周1-2次",
+            "D": "几乎不运动"
+          }
+        },
+        {
+          "question": "你喜欢的运动方式是？",
+          "options": {
+            "A": "有氧运动（跑步、游泳等）",
+            "B": "力量训练（健身房、器械等）",
+            "C": "休闲运动（散步、瑜伽等）",
+            "D": "不喜欢运动"
+          }
+        }
+      ]
+    },
+    {
+      "category": "sleep",
+      "questions": [
+        {
+          "question": "你平均每天睡眠时长？",
+          "options": {
+            "A": "7-8小时，且作息规律",
+            "B": "6-7小时，偶尔熬夜",
+            "C": "5-6小时，经常熬夜",
+            "D": "少于5小时，作息混乱"
+          }
+        },
+        {
+          "question": "你入睡是否容易？",
+          "options": {
+            "A": "很快入睡，睡眠质量高",
+            "B": "偶尔失眠",
+            "C": "经常难以入睡",
+            "D": "需要借助药物或助眠产品"
+          }
+        }
+      ]
+    },
+    {
+      "category": "mental",
+      "questions": [
+        {
+          "question": "你最近的情绪状态如何？",
+          "options": {
+            "A": "积极乐观，心情愉快",
+            "B": "偶有压力但能自我调节",
+            "C": "经常焦虑或情绪低落",
+            "D": "长期情绪低落需专业帮助"
+          }
+        },
+        {
+          "question": "遇到压力时你通常怎么做？",
+          "options": {
+            "A": "主动寻求家人朋友支持",
+            "B": "通过运动或兴趣爱好缓解",
+            "C": "选择独自承受",
+            "D": "容易失控或逃避"
+          }
+        }
+      ]
+    }
+  ]
+}
