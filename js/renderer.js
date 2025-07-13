@@ -328,7 +328,7 @@ class QuizRenderer {
       if (segment && fill) {
         fill.style.width = item.progress + "%";
 
-        const segmentClass = this.getSegmentClass(item.category);
+        const segmentClass = this.getCategoryClass(item.category);
         segment.className = `progress-segment ${segmentClass} ${item.status}`;
       }
     });
@@ -346,7 +346,7 @@ class QuizRenderer {
     progressData.forEach((item, index) => {
       // Create progress segment
       const segment = document.createElement("div");
-      const segmentClass = this.getSegmentClass(item.category);
+      const segmentClass = this.getCategoryClass(item.category);
       segment.className = `progress-segment ${segmentClass}`;
       segment.id = `segment-${index}`;
 
@@ -461,7 +461,6 @@ class QuizRenderer {
     // Generate styles for each category
     Object.entries(this.config.theme.categories).forEach(([key, category]) => {
       const categoryClass = this.getCategoryClass(key);
-      const segmentClass = this.getSegmentClass(key);
 
       css += `
         /* Category ${key} styles */
@@ -497,11 +496,11 @@ class QuizRenderer {
           background: ${category.color}dd;
         }
         
-        .progress-segment.${segmentClass}.completed .progress-segment-fill {
+        .progress-segment.${categoryClass}.completed .progress-segment-fill {
           background: ${category.color};
         }
         
-        .progress-segment.${segmentClass}.current .progress-segment-fill {
+        .progress-segment.${categoryClass}.current .progress-segment-fill {
           background: ${category.color}99;
         }
         
@@ -519,60 +518,54 @@ class QuizRenderer {
   }
 
   /**
-   * Get category CSS class
+   * Get category CSS class using dynamic generation
    */
-  getCategoryClass(categoryName) {
-    // Create a mapping for Chinese category names to simple class names
-    const categoryMapping = {
-      价值底色: "values",
-      人生规划: "planning",
-      金钱观: "money",
-      家庭观: "family",
-      感情观: "emotion",
-      情感表达: "emotion",
-      外向性: "extroversion",
-      开放性: "openness",
-      责任感: "conscientiousness",
-      亲和力: "agreeableness",
-      情绪稳定性: "neuroticism",
-      兴趣偏好: "interests",
-      技能优势: "skills",
-      工作风格: "workstyle",
-      价值观: "values",
-    };
+  getCategoryClass(categoryIdentifier) {
+    // First, try to find the category in the config by key
+    if (this.config.theme.categories[categoryIdentifier]) {
+      return this.generateCSSClass(categoryIdentifier);
+    }
 
-    const safeClassName =
-      categoryMapping[categoryName] ||
-      categoryName.toLowerCase().replace(/[^a-z0-9]/g, "-");
-    return `category-${safeClassName}`;
+    // If not found by key, search by name (for backward compatibility)
+    for (const [key, category] of Object.entries(
+      this.config.theme.categories
+    )) {
+      if (category.name === categoryIdentifier) {
+        return this.generateCSSClass(key);
+      }
+    }
+
+    // Fallback: generate class from the identifier itself
+    return this.generateCSSClass(categoryIdentifier);
   }
 
   /**
-   * Get segment CSS class
+   * Generate CSS class name from any string
    */
-  getSegmentClass(categoryName) {
-    // Create a mapping for Chinese category names to simple class names
-    const categoryMapping = {
-      价值底色: "values",
-      人生规划: "planning",
-      金钱观: "money",
-      家庭观: "family",
-      感情观: "emotion",
-      情感表达: "emotion",
-      外向性: "extroversion",
-      开放性: "openness",
-      责任感: "conscientiousness",
-      亲和力: "agreeableness",
-      情绪稳定性: "neuroticism",
-      兴趣偏好: "interests",
-      技能优势: "skills",
-      工作风格: "workstyle",
-      价值观: "values",
-    };
+  generateCSSClass(str) {
+    // Generate a simple hash from the string
+    const hash = this.simpleHash(str);
 
-    const safeClassName =
-      categoryMapping[categoryName] ||
-      categoryName.toLowerCase().replace(/[^a-z0-9]/g, "-");
-    return `segment-${safeClassName}`;
+    // Create a base class name from the string
+    const baseName = str
+      .toLowerCase()
+      .replace(/[^a-z0-9\u4e00-\u9fff]/g, "") // Keep only alphanumeric and Chinese characters
+      .substring(0, 10); // Limit length
+
+    // Combine with hash for uniqueness
+    return `category-${baseName}-${hash}`;
+  }
+
+  /**
+   * Simple hash function for string consistency
+   */
+  simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString(16).substring(0, 6);
   }
 }
