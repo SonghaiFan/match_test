@@ -205,10 +205,13 @@ class QuizEngine {
       const categoryProgress = (categoryAnswered / categoryTotal) * 100;
 
       let status = "pending";
+      let currentQuestionIndex = 0;
+
       if (categoryAnswered === categoryTotal) {
         status = "completed";
       } else if (index === this.currentCategoryIndex) {
         status = "current";
+        currentQuestionIndex = this.currentQuestionIndex;
       }
 
       progress.push({
@@ -217,6 +220,7 @@ class QuizEngine {
         status: status,
         answered: categoryAnswered,
         total: categoryTotal,
+        currentQuestionIndex: currentQuestionIndex,
       });
     });
 

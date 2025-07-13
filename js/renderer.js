@@ -323,13 +323,59 @@ class QuizRenderer {
     // Update progress segments
     progressData.forEach((item, index) => {
       const segment = document.getElementById(`segment-${index}`);
-      const fill = document.getElementById(`segment-fill-${index}`);
+      const answeredFill = document.getElementById(
+        `segment-answered-fill-${index}`
+      );
+      const progressFill = document.getElementById(
+        `segment-progress-fill-${index}`
+      );
 
-      if (segment && fill) {
-        fill.style.width = item.progress + "%";
+      if (segment && answeredFill && progressFill) {
+        // Calculate answered percentage
+        const answeredPercentage = (item.answered / item.total) * 100;
+
+        // Calculate current question progress (only for current category)
+        let currentProgressPercentage = answeredPercentage;
+        if (item.status === "current") {
+          currentProgressPercentage =
+            ((item.currentQuestionIndex + 1) / item.total) * 100;
+        }
+
+        // Store previous values for animation detection
+        const prevAnsweredWidth = answeredFill.style.width;
+        const prevStatus = segment.dataset.prevStatus;
+
+        // Gray fill shows background progress to current question position
+        if (item.status === "current") {
+          progressFill.style.width = currentProgressPercentage + "%";
+          progressFill.style.left = "0%";
+          progressFill.style.display = "block";
+        } else if (item.status === "completed") {
+          progressFill.style.width = "100%";
+          progressFill.style.left = "0%";
+          progressFill.style.display = "block";
+        } else {
+          progressFill.style.display = "none";
+        }
+
+        // Colored fill shows answered questions (on top of gray)
+        answeredFill.style.width = answeredPercentage + "%";
 
         const segmentClass = this.getCategoryClass(item.category);
         segment.className = `progress-segment ${segmentClass} ${item.status}`;
+
+        // Add completion animation trigger
+        if (item.status === "completed" && prevStatus !== "completed") {
+          segment.classList.add("just-completed");
+          setTimeout(() => {
+            segment.classList.remove("just-completed");
+          }, 500);
+        }
+
+        // No animations needed
+
+        // Store current status for next comparison
+        segment.dataset.prevStatus = item.status;
       }
     });
   }
@@ -344,19 +390,36 @@ class QuizRenderer {
     this.elements.progressLabels.innerHTML = "";
 
     progressData.forEach((item, index) => {
-      // Create progress segment
+      // Create progress segment with entrance animation
       const segment = document.createElement("div");
       const segmentClass = this.getCategoryClass(item.category);
       segment.className = `progress-segment ${segmentClass}`;
       segment.id = `segment-${index}`;
+      segment.style.opacity = "0";
+      segment.style.transform = "translateY(10px)";
 
-      // Create fill for the segment
-      const fill = document.createElement("div");
-      fill.className = "progress-segment-fill";
-      fill.id = `segment-fill-${index}`;
-      segment.appendChild(fill);
+      // Create answered fill (colored)
+      const answeredFill = document.createElement("div");
+      answeredFill.className = "progress-segment-answered-fill";
+      answeredFill.id = `segment-answered-fill-${index}`;
+      answeredFill.style.width = "0%";
+      segment.appendChild(answeredFill);
+
+      // Create progress fill (gray, shows progress to current question)
+      const progressFill = document.createElement("div");
+      progressFill.className = "progress-segment-progress-fill";
+      progressFill.id = `segment-progress-fill-${index}`;
+      progressFill.style.display = "none";
+      segment.appendChild(progressFill);
 
       this.elements.progressBar.appendChild(segment);
+
+      // Animate segment entrance
+      setTimeout(() => {
+        segment.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+        segment.style.opacity = "1";
+        segment.style.transform = "translateY(0)";
+      }, index * 100); // Staggered animation
 
       // Create progress label
       const label = document.createElement("div");
@@ -458,6 +521,104 @@ class QuizRenderer {
   generateDynamicCSS() {
     let css = "";
 
+    // Add base progress segment styles with animations
+    css += `
+      .progress-segment {
+        position: relative;
+        overflow: hidden;
+        background: #f5f5f5;
+        border-radius: 8px;
+        height: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .progress-segment:hover {
+        transform: scaleY(1.2);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      
+      .progress-segment-answered-fill,
+      .progress-segment-progress-fill {
+        transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    opacity 0.3s ease;
+      }
+      
+      .progress-segment-answered-fill {
+        transform-origin: left center;
+        animation: fillGrow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      
+      .progress-segment-progress-fill {
+        opacity: 0.7;
+        background: #e0e0e0;
+      }
+      
+      @keyframes fillGrow {
+        0% {
+          width: 0% !important;
+          transform: scaleX(0);
+        }
+        50% {
+          transform: scaleX(1.05);
+        }
+        100% {
+          transform: scaleX(1);
+        }
+      }
+      
+      .progress-segment.current {
+        box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
+      }
+      
+      .progress-segment.completed {
+        animation: completedBounce 0.5s ease-out;
+      }
+      
+      .progress-segment.just-completed {
+        animation: justCompletedCelebration 0.5s ease-out;
+      }
+      
+
+      
+      @keyframes completedBounce {
+        0% {
+          transform: scaleY(1);
+        }
+        50% {
+          transform: scaleY(1.3);
+        }
+        100% {
+          transform: scaleY(1);
+        }
+      }
+      
+      @keyframes justCompletedCelebration {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
+        }
+        25% {
+          transform: scale(1.05);
+          box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+        }
+        50% {
+          transform: scale(1.1);
+          box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
+        }
+        75% {
+          transform: scale(1.02);
+          box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 rgba(34, 197, 94, 0);
+        }
+      }
+      
+      
+    `;
+
     // Generate styles for each category
     Object.entries(this.config.theme.categories).forEach(([key, category]) => {
       const categoryClass = this.getCategoryClass(key);
@@ -496,12 +657,24 @@ class QuizRenderer {
           background: ${category.color}dd;
         }
         
-        .progress-segment.${categoryClass}.completed .progress-segment-fill {
-          background: ${category.color};
+        .progress-segment.${categoryClass} .progress-segment-progress-fill {
+          background: #e0e0e0;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          border-radius: inherit;
+          z-index: 1;
         }
         
-        .progress-segment.${categoryClass}.current .progress-segment-fill {
-          background: ${category.color}99;
+        .progress-segment.${categoryClass} .progress-segment-answered-fill {
+          background: ${category.color};
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          border-radius: inherit;
+          z-index: 2;
         }
         
         .result-category.${categoryClass} h3 {
