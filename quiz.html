@@ -14,22 +14,55 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, #fed6d7 0%, #fef0fa 50%, #fce5f5 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 192, 203, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 218, 224, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: floatingBubbles 20s ease-in-out infinite;
+        }
+
+        @keyframes floatingBubbles {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: translateY(-20px) rotate(180deg);
+            }
         }
 
         .quiz-container {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
             max-width: 800px;
             width: 100%;
             overflow: hidden;
             position: relative;
+            border: 2px solid rgba(255, 192, 203, 0.2);
         }
 
         .quiz-header {
@@ -40,6 +73,52 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
+        }
+
+        .quiz-header::before {
+            content: '💖';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            animation: heartBeat 2s ease-in-out infinite;
+        }
+
+        .quiz-header::after {
+            content: '✨';
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 1.2rem;
+            opacity: 0.4;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: rotate(0deg);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: rotate(180deg);
+            }
         }
 
         /* Category-specific header colors */
@@ -79,6 +158,19 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 8px;
+            animation: titleBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes titleBounce {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
         }
 
         .quiz-subtitle {
@@ -125,13 +217,13 @@
             left: 0;
             top: 0;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(208, 208, 208, 0.3);
             transition: width 0.3s ease;
             width: 0%;
         }
 
         .progress-segment.completed .progress-segment-fill {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             width: 100%;
         }
 
@@ -141,6 +233,47 @@
 
         .progress-segment.current .progress-segment-fill {
             background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Category-specific progress bar colors */
+        .category-values .progress-segment.completed .progress-segment-fill {
+            background: #1565c0;
+        }
+
+        .category-values .progress-segment.current .progress-segment-fill {
+            background: rgba(21, 101, 192, 0.6);
+        }
+
+        .category-planning .progress-segment.completed .progress-segment-fill {
+            background: #2e7d32;
+        }
+
+        .category-planning .progress-segment.current .progress-segment-fill {
+            background: rgba(46, 125, 50, 0.6);
+        }
+
+        .category-money .progress-segment.completed .progress-segment-fill {
+            background: #ef6c00;
+        }
+
+        .category-money .progress-segment.current .progress-segment-fill {
+            background: rgba(239, 108, 0, 0.6);
+        }
+
+        .category-family .progress-segment.completed .progress-segment-fill {
+            background: #7b1fa2;
+        }
+
+        .category-family .progress-segment.current .progress-segment-fill {
+            background: rgba(123, 31, 162, 0.6);
+        }
+
+        .category-emotion .progress-segment.completed .progress-segment-fill {
+            background: #c2185b;
+        }
+
+        .category-emotion .progress-segment.current .progress-segment-fill {
+            background: rgba(194, 24, 91, 0.6);
         }
 
         .progress-labels {
@@ -278,18 +411,23 @@
         .option {
             background: #f8f9fa;
             border: 2px solid transparent;
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 12px;
+            border-radius: 15px;
+            padding: 18px 22px;
+            margin-bottom: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 15px;
         }
 
         .option:hover {
             background: #e9ecef;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .option:active {
+            transform: scale(0.98);
         }
 
         /* Category-specific selected option colors */
@@ -343,11 +481,11 @@
         .btn {
             padding: 12px 30px;
             border: none;
-            border-radius: 8px;
+            border-radius: 25px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex: 1;
         }
 
@@ -380,6 +518,7 @@
 
         .btn-primary:hover {
             opacity: 0.9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .btn-secondary {
@@ -388,7 +527,12 @@
         }
 
         .btn-secondary:hover {
-            opacity: 0.9;
+            background: #dee2e6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
         }
 
         .btn:disabled {
@@ -437,8 +581,7 @@
         }
 
         .result-category:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
         }
 
         .result-category.category-values {
@@ -585,7 +728,7 @@
 <body>
     <div class="quiz-container">
         <div class="quiz-header">
-            <h1 class="quiz-title">匹配度测试</h1>
+            <h1 class="quiz-title">恋爱三观测试</h1>
             <p class="quiz-subtitle">了解你的价值观和人生态度</p>
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
@@ -597,10 +740,10 @@
         <div class="quiz-content">
             <!-- Start Screen -->
             <div id="startScreen" class="start-screen">
-                <h2>欢迎参加匹配度测试</h2>
-                <p>这个测试包含5个不同的类别，共24道题目。通过回答这些问题，我们将帮助你了解自己的价值观、人生规划、金钱观、家庭观和感情观。</p>
-                <p>请根据你的真实想法选择最符合你观点的选项。</p>
-                <button class="btn btn-primary" onclick="startQuiz()">开始测试</button>
+                <h2>💕 欢迎来到爱情匹配度测试 💕</h2>
+                <p>🎭 准备好探索你内心的小秘密了吗？这里有5个有趣的类别，总共24道精心设计的问题等着你！</p>
+                <p>✨ 诚实作答，让我们一起发现真正的你～记住，没有标准答案，只有最真实的你！</p>
+                <button class="btn btn-primary" onclick="startQuiz()">🚀 开始这场心灵之旅</button>
             </div>
 
             <!-- Quiz Questions -->
@@ -609,9 +752,9 @@
                     <div class="question" id="questionText"></div>
                     <ul class="options" id="optionsList"></ul>
                     <div class="quiz-navigation">
-                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()"
-                            disabled>上一题</button>
-                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>下一题</button>
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>⬅️
+                            上一题</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>下一题 ➡️</button>
                     </div>
                 </div>
             </div>
@@ -619,11 +762,11 @@
             <!-- Results Screen -->
             <div id="resultsScreen" style="display: none;">
                 <div class="results">
-                    <h2>🎉 测试完成！</h2>
-                    <p class="results-subtitle">以下是你的详细回答，了解你的价值观和人生态度</p>
+                    <h2>🎊 哇！你完成了这场心灵探索之旅！🎊</h2>
+                    <p class="results-subtitle">✨ 以下是你的独特画像～每一个回答都展现了真实的你，太棒了！💖</p>
                     <div class="results-actions">
-                        <button class="btn btn-secondary" onclick="exportResults()">导出文本</button>
-                        <button class="btn btn-primary" onclick="restartQuiz()">重新测试</button>
+                        <button class="btn btn-secondary" onclick="exportResults()">📄 保存我的答案</button>
+                        <button class="btn btn-primary" onclick="restartQuiz()">🔄 再来一次探索</button>
                     </div>
                     <div class="results-grid" id="resultsList"></div>
                 </div>
@@ -761,7 +904,7 @@
             // Update next button text
             const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
                 currentQuestionIndex === quizData[currentCategoryIndex].questions.length - 1;
-            nextBtn.textContent = isLastQuestion ? '查看结果' : '下一题';
+            nextBtn.textContent = isLastQuestion ? '🎁 查看我的结果' : '下一题 ➡️';
         }
 
         function initializeProgressBar() {
@@ -806,13 +949,16 @@
                 // Update fill width
                 fill.style.width = categoryProgress + '%';
 
+                // Get category class for styling
+                const categoryClass = getCategoryClass(category.category);
+
                 // Update segment class
                 if (categoryAnswered === categoryTotal) {
-                    segment.className = 'progress-segment completed';
+                    segment.className = `progress-segment completed ${categoryClass}`;
                 } else if (index === currentCategoryIndex) {
-                    segment.className = 'progress-segment current';
+                    segment.className = `progress-segment current ${categoryClass}`;
                 } else {
-                    segment.className = 'progress-segment';
+                    segment.className = `progress-segment ${categoryClass}`;
                 }
             });
         }
