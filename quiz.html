@@ -446,7 +446,7 @@
         .category-money .option.selected {
             background: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%);
             color: white;
-            border-color: #ef6c00;
+            border-color: #efb300;
         }
 
         .category-family .option.selected {
@@ -740,10 +740,10 @@
         <div class="quiz-content">
             <!-- Start Screen -->
             <div id="startScreen" class="start-screen">
-                <h2>💕 欢迎来到爱情匹配度测试 💕</h2>
-                <p>🎭 准备好探索你内心的小秘密了吗？这里有5个有趣的类别，总共24道精心设计的问题等着你！</p>
+                <h2>💕 欢迎来到恋爱三观测试 💕</h2>
+                <p>这里有5个有趣的类别，总共24道精心设计的问题等着你！</p>
                 <p>✨ 诚实作答，让我们一起发现真正的你～记住，没有标准答案，只有最真实的你！</p>
-                <button class="btn btn-primary" onclick="startQuiz()">🚀 开始这场心灵之旅</button>
+                <button class="btn btn-primary" onclick="startQuiz()">开始</button>
             </div>
 
             <!-- Quiz Questions -->
@@ -898,8 +898,8 @@
 
             prevBtn.disabled = currentCategoryIndex === 0 && currentQuestionIndex === 0;
 
-            const currentAnswer = answers[currentCategoryIndex][currentQuestionIndex];
-            nextBtn.disabled = currentAnswer === undefined;
+            // Remove the requirement to select an option before proceeding
+            nextBtn.disabled = false;
 
             // Update next button text
             const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
