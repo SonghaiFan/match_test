@@ -131,6 +131,13 @@ class QuizApp {
       }
     });
 
+    // Text input for open-ended questions
+    document.addEventListener("input", (e) => {
+      if (e.target.matches('[data-action="input-answer"]')) {
+        this.setTextAnswer(e.target.value);
+      }
+    });
+
     // Results actions
     document.addEventListener("click", (e) => {
       if (e.target.matches('[data-action="export-results"]')) {
@@ -163,6 +170,21 @@ class QuizApp {
     this.renderer.selectOption(optionElement, this.engine.getCurrentCategory());
 
     if (!wasAnswered) {
+      this.updateProgress();
+    }
+
+    this.updateNavigationButtons();
+  }
+
+  /**
+   * Set text answer for open-ended questions
+   */
+  setTextAnswer(text) {
+    if (!this.initialized) return;
+
+    const wasAnswered = this.engine.setTextAnswer(text);
+
+    if (!wasAnswered && text && text.trim()) {
       this.updateProgress();
     }
 
@@ -236,11 +258,24 @@ class QuizApp {
 
       category.questions.forEach((question, questionIndex) => {
         const answer = answers[categoryIndex][questionIndex];
-        const answerText = answer ? question.options[answer] : "未作答";
+        let answerText = "未作答";
+        let answerLabel = "-";
+
+        if (answer) {
+          if (question.type === "open") {
+            // For open-ended questions, export the text answer
+            answerText = answer;
+            answerLabel = "文本回答";
+          } else {
+            // For multiple choice questions, export the option text (default for backward compatibility)
+            answerText = question.options[answer];
+            answerLabel = answer;
+          }
+        }
 
         exportText += exportTemplate.question
           .replace("{question}", question.question)
-          .replace("{answer}", answer || "-")
+          .replace("{answer}", answerLabel)
           .replace("{answerText}", answerText);
       });
 

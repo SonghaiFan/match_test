@@ -87,11 +87,17 @@ Replace `{testtype}` with your desired test identifier (e.g., `skills`, `health`
           }
         },
         {
+          "type": "choice",
           "question": "Another question in this category?",
           "options": {
             "A": "Option A",
             "B": "Option B"
           }
+        },
+        {
+          "type": "open",
+          "question": "Please describe your experience with this topic.",
+          "placeholder": "Please share your thoughts and experiences..."
         }
       ]
     },
@@ -169,8 +175,10 @@ Questions are organized by category in the `questions` array:
 
 Each question contains:
 
+- **type**: Question type - "choice" for multiple choice, "open" for open-ended (optional, defaults to "choice")
 - **question**: Question text
-- **options**: Object with A, B, C, D... keys and answer text values
+- **options**: Object with A, B, C, D... keys and answer text values (for choice questions)
+- **placeholder**: Placeholder text for input field (for open questions)
 
 ## Chinese Character Support
 
@@ -235,6 +243,23 @@ Check the existing test files for complete examples:
 - Quiz interface: `quiz.html?test={testtype}`
 - Direct access: Quiz redirects to index.html if no test parameter
 
+## Question Types
+
+The system supports two types of questions:
+
+### 1. Multiple Choice Questions (type: "choice")
+
+- Traditional multiple choice with predefined options
+- Users select from A, B, C, D options
+- Answers are stored as option keys (A, B, C, D)
+
+### 2. Open-ended Questions (type: "open")
+
+- Text input questions for detailed responses
+- Users type their answers in a textarea
+- Answers are stored as the full text response
+- Supports placeholder text for guidance
+
 ## Key Changes
 
 ### From Previous Version
@@ -243,6 +268,7 @@ Check the existing test files for complete examples:
 - **Single File Management**: Only one file per test type instead of two
 - **Easier Maintenance**: All test data in one location
 - **Consistent Format**: Unified structure across all test types
+- **Flexible Question Types**: Support for both multiple choice and open-ended questions
 
 ### Migration
 

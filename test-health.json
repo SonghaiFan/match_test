@@ -9,7 +9,7 @@
       "title": "欢迎参加健康生活测试",
       "description": [
         "本测试将帮助你了解自己的健康生活习惯，包括饮食、运动、睡眠和心理健康。",
-        "请根据你的真实情况作答，测试结果仅供参考。"
+        "测试包含选择题和开放式问题，请根据你的真实情况作答。"
       ],
       "startButton": "开始测试"
     },
@@ -53,15 +53,16 @@
     "template": {
       "header": "=== {title} ===\n\n",
       "category": "\n【{category}】\n{separator}\n",
-      "question": "问题：{question}\n答案：{answer}. {answerText}\n\n",
+      "question": "问题：{question}\n答案：{answer}\n\n",
       "separator": "="
     }
   },
   "questions": [
     {
-      "category": "diet",
+      "category": "饮食习惯",
       "questions": [
         {
+          "type": "choice",
           "question": "你每天通常吃几顿蔬菜水果？",
           "options": {
             "A": "三顿都吃，且分量充足",
@@ -71,20 +72,17 @@
           }
         },
         {
-          "question": "你平时饮食偏好是？",
-          "options": {
-            "A": "清淡均衡，少油少盐",
-            "B": "喜欢重口味或油炸食品",
-            "C": "经常外卖快餐",
-            "D": "无特别偏好"
-          }
+          "type": "open",
+          "question": "请描述你昨天的三餐都吃了什么？",
+          "placeholder": "请详细描述早餐、午餐、晚餐的内容..."
         }
       ]
     },
     {
-      "category": "exercise",
+      "category": "运动习惯",
       "questions": [
         {
+          "type": "choice",
           "question": "你每周运动的频率是？",
           "options": {
             "A": "每周5次及以上",
@@ -94,20 +92,17 @@
           }
         },
         {
-          "question": "你喜欢的运动方式是？",
-          "options": {
-            "A": "有氧运动（跑步、游泳等）",
-            "B": "力量训练（健身房、器械等）",
-            "C": "休闲运动（散步、瑜伽等）",
-            "D": "不喜欢运动"
-          }
+          "type": "open",
+          "question": "描述一下你最喜欢的运动方式，以及你坚持运动的动机？",
+          "placeholder": "请分享你的运动经历和感受..."
         }
       ]
     },
     {
-      "category": "sleep",
+      "category": "睡眠质量",
       "questions": [
         {
+          "type": "choice",
           "question": "你平均每天睡眠时长？",
           "options": {
             "A": "7-8小时，且作息规律",
@@ -117,20 +112,17 @@
           }
         },
         {
-          "question": "你入睡是否容易？",
-          "options": {
-            "A": "很快入睡，睡眠质量高",
-            "B": "偶尔失眠",
-            "C": "经常难以入睡",
-            "D": "需要借助药物或助眠产品"
-          }
+          "type": "open",
+          "question": "如果你有睡眠问题，通常是什么原因造成的？你是如何改善的？",
+          "placeholder": "请分享你的睡眠困扰和改善方法..."
         }
       ]
     },
     {
-      "category": "mental",
+      "category": "心理健康",
       "questions": [
         {
+          "type": "choice",
           "question": "你最近的情绪状态如何？",
           "options": {
             "A": "积极乐观，心情愉快",
@@ -140,13 +132,9 @@
           }
         },
         {
-          "question": "遇到压力时你通常怎么做？",
-          "options": {
-            "A": "主动寻求家人朋友支持",
-            "B": "通过运动或兴趣爱好缓解",
-            "C": "选择独自承受",
-            "D": "容易失控或逃避"
-          }
+          "type": "open",
+          "question": "请分享一件最近让你感到快乐或有成就感的事情。",
+          "placeholder": "请描述具体的事情和你的感受..."
         }
       ]
     }

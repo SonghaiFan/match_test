@@ -85,6 +85,27 @@ class QuizEngine {
   }
 
   /**
+   * Set text answer for open-ended questions
+   */
+  setTextAnswer(text) {
+    if (!this.started) return false;
+
+    const wasAnswered =
+      this.answers[this.currentCategoryIndex][this.currentQuestionIndex] !==
+      undefined;
+
+    this.answers[this.currentCategoryIndex][this.currentQuestionIndex] = text;
+
+    if (!wasAnswered && text && text.trim()) {
+      this.answeredQuestions++;
+    } else if (wasAnswered && (!text || !text.trim())) {
+      this.answeredQuestions--;
+    }
+
+    return wasAnswered;
+  }
+
+  /**
    * Go to next question
    */
   nextQuestion() {

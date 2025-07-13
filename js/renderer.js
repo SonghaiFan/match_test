@@ -217,29 +217,64 @@ class QuizRenderer {
       this.elements.questionText.textContent = question.question;
     }
 
-    // Render options
+    // Render based on question type
     if (this.elements.optionsList) {
       this.elements.optionsList.innerHTML = "";
 
-      Object.entries(question.options).forEach(([key, value]) => {
-        const li = document.createElement("li");
-        li.className = "option";
-        li.setAttribute("data-action", "select-option");
-        li.setAttribute("data-option", key);
-
-        // Restore previous answer if exists
-        if (currentAnswer === key) {
-          li.classList.add("selected");
-        }
-
-        li.innerHTML = `
-          <span class="option-label">${key}</span>
-          <span class="option-text">${value}</span>
-        `;
-
-        this.elements.optionsList.appendChild(li);
-      });
+      if (question.type === "open") {
+        // Render open-ended question input
+        this.renderOpenQuestion(question, currentAnswer);
+      } else {
+        // Render multiple choice options (default, for backward compatibility)
+        this.renderChoiceQuestion(question, currentAnswer);
+      }
     }
+  }
+
+  /**
+   * Render multiple choice question
+   */
+  renderChoiceQuestion(question, currentAnswer = null) {
+    Object.entries(question.options).forEach(([key, value]) => {
+      const li = document.createElement("li");
+      li.className = "option";
+      li.setAttribute("data-action", "select-option");
+      li.setAttribute("data-option", key);
+
+      // Restore previous answer if exists
+      if (currentAnswer === key) {
+        li.classList.add("selected");
+      }
+
+      li.innerHTML = `
+        <span class="option-label">${key}</span>
+        <span class="option-text">${value}</span>
+      `;
+
+      this.elements.optionsList.appendChild(li);
+    });
+  }
+
+  /**
+   * Render open-ended question
+   */
+  renderOpenQuestion(question, currentAnswer = null) {
+    const div = document.createElement("div");
+    div.className = "open-question-container";
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "open-question-input";
+    textarea.placeholder = question.placeholder || "请输入您的答案...";
+    textarea.setAttribute("data-action", "input-answer");
+    textarea.rows = 6;
+
+    // Restore previous answer if exists
+    if (currentAnswer) {
+      textarea.value = currentAnswer;
+    }
+
+    div.appendChild(textarea);
+    this.elements.optionsList.appendChild(div);
   }
 
   /**
@@ -359,14 +394,27 @@ class QuizRenderer {
 
       category.questions.forEach((question, questionIndex) => {
         const answer = answers[categoryIndex][questionIndex];
-        const answerText = answer ? question.options[answer] : "未作答";
+        let answerText = "未作答";
+        let answerLabel = "-";
+
+        if (answer) {
+          if (question.type === "open") {
+            // For open-ended questions, display the text answer
+            answerText = answer;
+            answerLabel = "文本";
+          } else {
+            // For multiple choice questions, display the option text (default for backward compatibility)
+            answerText = question.options[answer];
+            answerLabel = answer;
+          }
+        }
 
         html += `
           <div class="result-question">
             <div class="result-question-text">${question.question}</div>
             <div class="result-answer">
-              <span class="result-answer-label">${answer || "-"}</span>
-              <span>${answerText}</span>
+              <span class="result-answer-label">${answerLabel}</span>
+              <span class="result-answer-text">${answerText}</span>
             </div>
           </div>
         `;
