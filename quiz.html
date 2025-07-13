@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>匹配度测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .quiz-header {
+            background: #f8f9fa;
+            color: #333;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Category-specific header colors */
+        .category-values .quiz-header {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #1565c0;
+        }
+
+        .category-planning .quiz-header {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            color: #2e7d32;
+        }
+
+        .category-money .quiz-header {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            color: #ef6c00;
+        }
+
+        .category-family .quiz-header {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            color: #7b1fa2;
+        }
+
+        .category-emotion .quiz-header {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            color: #c2185b;
+        }
+
+        /* Light header for start and results screens */
+        .start-screen-header .quiz-header,
+        .results-screen-header .quiz-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+
+        .quiz-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .quiz-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .category-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.95;
+            margin-bottom: 0;
+        }
+
+        .progress-container {
+            margin-top: 25px;
+        }
+
+        .progress-bar {
+            display: flex;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .progress-segment {
+            flex: 1;
+            margin-right: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-segment:last-child {
+            margin-right: 0;
+        }
+
+        .progress-segment-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-segment.completed .progress-segment-fill {
+            background: rgba(0, 0, 0, 0.5);
+            width: 100%;
+        }
+
+        .progress-segment.current {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-segment.current .progress-segment-fill {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .progress-labels {
+            display: flex;
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+
+        .progress-label {
+            flex: 1;
+            text-align: center;
+            padding: 0 4px;
+            font-weight: 500;
+            color: inherit;
+        }
+
+        .quiz-content {
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quiz-question-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .start-screen p {
+            color: black;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .category-info {
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .category-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            border-radius: 15px;
+        }
+
+        /* Category color themes */
+        .category-values .category-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        }
+
+        .category-values .category-name {
+            color: #1565c0;
+        }
+
+        .category-values .category-info::before {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="20">🌸</text></svg>');
+        }
+
+        .category-planning .category-info {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+        }
+
+        .category-planning .category-name {
+            color: #2e7d32;
+        }
+
+        .category-money .category-info {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+        }
+
+        .category-money .category-name {
+            color: #ef6c00;
+        }
+
+        .category-family .category-info {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+        }
+
+        .category-family .category-name {
+            color: #7b1fa2;
+        }
+
+        .category-emotion .category-info {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+        }
+
+        .category-emotion .category-name {
+            color: #c2185b;
+        }
+
+        .category-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options {
+            list-style: none;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+        }
+
+        /* Category-specific selected option colors */
+        .category-values .option.selected {
+            background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+            color: white;
+            border-color: #1565c0;
+        }
+
+        .category-planning .option.selected {
+            background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+            color: white;
+            border-color: #2e7d32;
+        }
+
+        .category-money .option.selected {
+            background: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%);
+            color: white;
+            border-color: #ef6c00;
+        }
+
+        .category-family .option.selected {
+            background: linear-gradient(135deg, #7b1fa2 0%, #8e24aa 100%);
+            color: white;
+            border-color: #7b1fa2;
+        }
+
+        .category-emotion .option.selected {
+            background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
+            color: white;
+            border-color: #c2185b;
+        }
+
+        .option-label {
+            font-weight: 600;
+            min-width: 20px;
+        }
+
+        .option-text {
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: black;
+            color: white;
+            transition: background 0.3s ease;
+        }
+
+        /* Category-specific button colors */
+        .category-values .btn-primary {
+            background: #1565c0;
+        }
+
+        .category-planning .btn-primary {
+            background: #2e7d32;
+        }
+
+        .category-money .btn-primary {
+            background: #ef6c00;
+        }
+
+        .category-family .btn-primary {
+            background: #7b1fa2;
+        }
+
+        .category-emotion .btn-primary {
+            background: #c2185b;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .results {
+            text-align: center;
+        }
+
+        .results h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .results-subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .results-grid {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .result-category {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            border-left: 5px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .result-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .result-category.category-values {
+            border-left-color: #1565c0;
+        }
+
+        .result-category.category-planning {
+            border-left-color: #2e7d32;
+        }
+
+        .result-category.category-money {
+            border-left-color: #ef6c00;
+        }
+
+        .result-category.category-family {
+            border-left-color: #7b1fa2;
+        }
+
+        .result-category.category-emotion {
+            border-left-color: #c2185b;
+        }
+
+        .result-category h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .result-category.category-values h3 {
+            color: #1565c0;
+        }
+
+        .result-category.category-planning h3 {
+            color: #2e7d32;
+        }
+
+        .result-category.category-money h3 {
+            color: #ef6c00;
+        }
+
+        .result-category.category-family h3 {
+            color: #7b1fa2;
+        }
+
+        .result-category.category-emotion h3 {
+            color: #c2185b;
+        }
+
+        .result-question {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 3px solid #e9ecef;
+        }
+
+        .result-question:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-question-text {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .result-answer {
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .result-answer-label {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .result-category.category-values .result-answer-label {
+            background: #1565c0;
+        }
+
+        .result-category.category-planning .result-answer-label {
+            background: #2e7d32;
+        }
+
+        .result-category.category-money .result-answer-label {
+            background: #ef6c00;
+        }
+
+        .result-category.category-family .result-answer-label {
+            background: #7b1fa2;
+        }
+
+        .result-category.category-emotion .result-answer-label {
+            background: #c2185b;
+        }
+
+        .question-count {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            color: inherit;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                margin: 10px;
+            }
+
+            .quiz-content {
+                padding: 25px;
+            }
+
+            .quiz-header {
+                padding: 25px;
+            }
+
+            .quiz-title {
+                font-size: 1.5rem;
+            }
+
+            .question {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">匹配度测试</h1>
+            <p class="quiz-subtitle">了解你的价值观和人生态度</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-labels" id="progressLabels"></div>
+            </div>
+            <div class="question-count" id="questionCount">0 / 0</div>
+        </div>
+
+        <div class="quiz-content">
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>欢迎参加匹配度测试</h2>
+                <p>这个测试包含5个不同的类别，共24道题目。通过回答这些问题，我们将帮助你了解自己的价值观、人生规划、金钱观、家庭观和感情观。</p>
+                <p>请根据你的真实想法选择最符合你观点的选项。</p>
+                <button class="btn btn-primary" onclick="startQuiz()">开始测试</button>
+            </div>
+
+            <!-- Quiz Questions -->
+            <div id="quizScreen" style="display: none;">
+                <div class="quiz-question-container">
+                    <div class="question" id="questionText"></div>
+                    <ul class="options" id="optionsList"></ul>
+                    <div class="quiz-navigation">
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()"
+                            disabled>上一题</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>下一题</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" style="display: none;">
+                <div class="results">
+                    <h2>🎉 测试完成！</h2>
+                    <p class="results-subtitle">以下是你的详细回答，了解你的价值观和人生态度</p>
+                    <div class="results-actions">
+                        <button class="btn btn-secondary" onclick="exportResults()">导出文本</button>
+                        <button class="btn btn-primary" onclick="restartQuiz()">重新测试</button>
+                    </div>
+                    <div class="results-grid" id="resultsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let quizData = [];
+        let currentCategoryIndex = 0;
+        let currentQuestionIndex = 0;
+        let answers = {};
+        let totalQuestions = 0;
+        let answeredQuestions = 0;
+
+        // Load quiz data
+        async function loadQuizData() {
+            try {
+                const response = await fetch('quiz.json');
+                quizData = await response.json();
+
+                // Calculate total questions
+                totalQuestions = quizData.reduce((total, category) => total + category.questions.length, 0);
+
+                // Initialize answers object
+                quizData.forEach((category, catIndex) => {
+                    answers[catIndex] = {};
+                });
+
+                initializeProgressBar();
+                updateQuestionCount();
+            } catch (error) {
+                console.error('Error loading quiz data:', error);
+                alert('无法加载测试数据，请确保quiz.json文件存在。');
+            }
+        }
+
+        function startQuiz() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            currentCategoryIndex = 0;
+            currentQuestionIndex = 0;
+            document.body.classList.remove('start-screen-header');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const category = quizData[currentCategoryIndex];
+            const question = category.questions[currentQuestionIndex];
+
+            // Add category class to body for styling
+            document.body.className = getCategoryClass(category.category);
+
+            document.getElementById('questionText').textContent = question.question;
+
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            Object.entries(question.options).forEach(([key, value]) => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                li.onclick = () => selectOption(key, li);
+
+                const savedAnswer = answers[currentCategoryIndex][currentQuestionIndex];
+                if (savedAnswer === key) {
+                    li.classList.add('selected');
+                }
+
+                li.innerHTML = `
+                    <span class="option-label">${key}</span>
+                    <span class="option-text">${value}</span>
+                `;
+
+                optionsList.appendChild(li);
+            });
+
+            updateNavigationButtons();
+            updateProgress();
+            updateQuestionCount();
+        }
+
+        function selectOption(optionKey, optionElement) {
+            // Remove selection from all options
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+
+            // Select current option
+            optionElement.classList.add('selected');
+
+            // Save answer
+            const wasAnswered = answers[currentCategoryIndex][currentQuestionIndex] !== undefined;
+            answers[currentCategoryIndex][currentQuestionIndex] = optionKey;
+
+            if (!wasAnswered) {
+                answeredQuestions++;
+            }
+
+            updateNavigationButtons();
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData[currentCategoryIndex].questions.length - 1) {
+                currentQuestionIndex++;
+            } else if (currentCategoryIndex < quizData.length - 1) {
+                currentCategoryIndex++;
+                currentQuestionIndex = 0;
+            } else {
+                showResults();
+                return;
+            }
+
+            showQuestion();
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+            } else if (currentCategoryIndex > 0) {
+                currentCategoryIndex--;
+                currentQuestionIndex = quizData[currentCategoryIndex].questions.length - 1;
+            }
+
+            showQuestion();
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentCategoryIndex === 0 && currentQuestionIndex === 0;
+
+            const currentAnswer = answers[currentCategoryIndex][currentQuestionIndex];
+            nextBtn.disabled = currentAnswer === undefined;
+
+            // Update next button text
+            const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
+                currentQuestionIndex === quizData[currentCategoryIndex].questions.length - 1;
+            nextBtn.textContent = isLastQuestion ? '查看结果' : '下一题';
+        }
+
+        function initializeProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const progressLabels = document.getElementById('progressLabels');
+
+            progressBar.innerHTML = '';
+            progressLabels.innerHTML = '';
+
+            quizData.forEach((category, index) => {
+                // Create progress segment
+                const segment = document.createElement('div');
+                segment.className = 'progress-segment';
+                segment.id = `segment-${index}`;
+
+                // Create fill for the segment
+                const fill = document.createElement('div');
+                fill.className = 'progress-segment-fill';
+                fill.id = `segment-fill-${index}`;
+                segment.appendChild(fill);
+
+                progressBar.appendChild(segment);
+
+                // Create progress label
+                const label = document.createElement('div');
+                label.className = 'progress-label';
+                label.textContent = category.category;
+                progressLabels.appendChild(label);
+            });
+        }
+
+        function updateProgress() {
+            quizData.forEach((category, index) => {
+                const segment = document.getElementById(`segment-${index}`);
+                const fill = document.getElementById(`segment-fill-${index}`);
+
+                // Calculate progress for this category
+                const categoryAnswered = Object.keys(answers[index] || {}).length;
+                const categoryTotal = category.questions.length;
+                const categoryProgress = (categoryAnswered / categoryTotal) * 100;
+
+                // Update fill width
+                fill.style.width = categoryProgress + '%';
+
+                // Update segment class
+                if (categoryAnswered === categoryTotal) {
+                    segment.className = 'progress-segment completed';
+                } else if (index === currentCategoryIndex) {
+                    segment.className = 'progress-segment current';
+                } else {
+                    segment.className = 'progress-segment';
+                }
+            });
+        }
+
+        function updateQuestionCount() {
+            let currentQuestionNumber = 0;
+            for (let i = 0; i < currentCategoryIndex; i++) {
+                currentQuestionNumber += quizData[i].questions.length;
+            }
+            currentQuestionNumber += currentQuestionIndex + 1;
+
+            document.getElementById('questionCount').textContent = `${currentQuestionNumber} / ${totalQuestions}`;
+        }
+
+        function showResults() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            document.body.className = 'results-screen-header';
+
+
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+
+            quizData.forEach((category, categoryIndex) => {
+                const categoryDiv = document.createElement('div');
+                const categoryClass = getCategoryClass(category.category);
+                categoryDiv.className = `result-category ${categoryClass}`;
+
+                let categoryHTML = `<h3>${category.category}</h3>`;
+
+                category.questions.forEach((question, questionIndex) => {
+                    const answer = answers[categoryIndex][questionIndex];
+                    const answerText = question.options[answer];
+                    categoryHTML += `
+                        <div class="result-question">
+                            <div class="result-question-text">${question.question}</div>
+                            <div class="result-answer">
+                                <span class="result-answer-label">${answer}</span>
+                                ${answerText}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                categoryDiv.innerHTML = categoryHTML;
+                resultsList.appendChild(categoryDiv);
+            });
+
+            updateProgress();
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('startScreen').style.display = 'block';
+            document.body.className = 'start-screen-header';
+
+            // Reset data
+            currentCategoryIndex = 0;
+            currentQuestionIndex = 0;
+            answeredQuestions = 0;
+            answers = {};
+            quizData.forEach((category, catIndex) => {
+                answers[catIndex] = {};
+            });
+
+            updateProgress();
+            updateQuestionCount();
+        }
+
+        function exportResults() {
+            let resultText = '匹配度测试结果\n\n';
+
+            quizData.forEach((category, categoryIndex) => {
+                resultText += `${category.category}\n`;
+                resultText += '='.repeat(category.category.length) + '\n\n';
+
+                category.questions.forEach((question, questionIndex) => {
+                    const answer = answers[categoryIndex][questionIndex];
+                    const answerText = question.options[answer];
+                    resultText += `问题：${question.question}\n`;
+                    resultText += `回答：${answer} - ${answerText}\n\n`;
+                });
+
+                resultText += '\n';
+            });
+
+            // Create and download text file
+            const blob = new Blob([resultText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '匹配度测试结果.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Get category CSS class name
+        function getCategoryClass(categoryName) {
+            const categoryMap = {
+                '价值底色': 'category-values',
+                '人生规划': 'category-planning',
+                '金钱观': 'category-money',
+                '家庭观': 'category-family',
+                '感情观': 'category-emotion'
+            };
+            return categoryMap[categoryName] || 'category-default';
+        }
+
+        // Initialize the app
+        window.addEventListener('load', () => {
+            document.body.className = 'start-screen-header';
+            loadQuizData();
+        });
+    </script>
+</body>
+
+</html>
