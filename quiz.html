@@ -13,15 +13,17 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fed6d7 0%, #fef0fa 50%, #fce5f5 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Text', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #fefefe 0%, #f8f9fa 100%);
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             position: relative;
-            overflow-x: hidden;
+            overflow: hidden;
+            line-height: 1.6;
         }
 
         body::before {
@@ -55,24 +57,28 @@
         }
 
         .quiz-container {
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
-            max-width: 800px;
-            width: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.98) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 0;
+            box-shadow: none;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
             position: relative;
-            border: 2px solid rgba(255, 192, 203, 0.2);
+            border: none;
         }
 
         .quiz-header {
-            background: #f8f9fa;
-            color: #333;
-            padding: 35px;
+            background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+            color: #2c3e50;
+            padding: 32px 40px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 160px;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .quiz-header::before {
@@ -155,10 +161,14 @@
         }
 
         .quiz-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            animation: titleBounce 2s ease-in-out infinite;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         @keyframes titleBounce {
@@ -174,9 +184,11 @@
         }
 
         .quiz-subtitle {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin-bottom: 15px;
+            font-size: 1.1rem;
+            opacity: 0.7;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 0.01em;
         }
 
         .category-header {
@@ -192,20 +204,22 @@
 
         .progress-bar {
             display: flex;
-            height: 12px;
-            border-radius: 6px;
+            height: 6px;
+            border-radius: 12px;
             overflow: hidden;
-            background: rgba(255, 255, 255, 0.3);
-            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.08);
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
 
         .progress-segment {
             flex: 1;
-            margin-right: 2px;
-            background: rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
+            margin-right: 1px;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             position: relative;
             overflow: hidden;
+            border-radius: 12px;
         }
 
         .progress-segment:last-child {
@@ -292,11 +306,12 @@
         }
 
         .quiz-content {
-            padding: 40px;
-            min-height: 400px;
+            padding: 64px 80px;
+            height: calc(100vh - 160px);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            overflow: hidden;
         }
 
         .quiz-question-container {
@@ -304,22 +319,32 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
         }
 
         .start-screen {
             text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .start-screen h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            color: #1a202c;
+            margin-bottom: 24px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .start-screen p {
-            color: black;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 32px;
+            line-height: 1.7;
+            font-size: 1.1rem;
+            font-weight: 400;
         }
 
         .category-info {
@@ -397,33 +422,51 @@
         }
 
         .question {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 25px;
-            line-height: 1.5;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 64px;
+            line-height: 1.2;
+            text-align: center;
+            max-width: 900px;
+            letter-spacing: -0.03em;
+            word-wrap: break-word;
+            hyphens: auto;
+            padding: 0 24px;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .options {
             list-style: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .option {
-            background: #f8f9fa;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            padding: 18px 22px;
-            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin-bottom: 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 20px;
+            font-size: 1.1rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
         }
 
         .option:hover {
-            background: #e9ecef;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .option:active {
@@ -462,37 +505,57 @@
         }
 
         .option-label {
-            font-weight: 600;
+            font-weight: 700;
             min-width: 20px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 4px 8px;
+            text-align: center;
         }
 
         .option-text {
             flex: 1;
-            line-height: 1.4;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            color: #2d3748;
+            font-weight: 500;
         }
 
         .quiz-navigation {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 0;
+            right: 0;
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
+            width: 100%;
+            padding: 0 40px;
+            pointer-events: none;
+            z-index: 100;
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 16px 32px;
             border: none;
-            border-radius: 25px;
+            border-radius: 16px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            flex: 0 0 auto;
+            min-width: 128px;
+            backdrop-filter: blur(10px);
+            letter-spacing: 0.01em;
+            pointer-events: auto;
         }
 
         .btn-primary {
-            background: black;
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
             color: white;
-            transition: background 0.3s ease;
+            box-shadow: 0 4px 16px rgba(26, 32, 44, 0.25);
         }
 
         /* Category-specific button colors */
@@ -517,22 +580,25 @@
         }
 
         .btn-primary:hover {
-            opacity: 0.9;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            box-shadow: 0 8px 24px rgba(26, 32, 44, 0.35);
+            transform: translateY(-2px);
         }
 
         .btn-secondary {
-            background: #e9ecef;
+            background: rgba(233, 236, 239, 0.8);
             color: #495057;
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         .btn-secondary:hover {
-            background: #dee2e6;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(222, 226, 230, 0.9);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
         }
 
         .btn:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.98);
         }
 
         .btn:disabled {
@@ -543,99 +609,150 @@
 
         .results {
             text-align: center;
+            height: calc(100vh - 160px);
+            overflow-y: auto;
+            padding-bottom: 40px;
         }
 
         .results h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 48px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         .results-subtitle {
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 1.1rem;
+            display: none;
+        }
+
+        .personality-analysis {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 64px;
+            box-shadow: none;
+            backdrop-filter: none;
+            text-align: center;
+        }
+
+        .personality-category {
+            margin-bottom: 32px;
+        }
+
+        .personality-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .personality-category h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .personality-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .keyword-tag {
+            background: transparent;
+            color: #2d3748;
+            padding: 8px 0;
+            border: none;
+            border-bottom: 2px solid #e2e8f0;
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+        }
+
+        .keyword-tag:hover {
+            border-bottom-color: #cbd5e0;
         }
 
         .results-actions {
             display: flex;
-            gap: 15px;
+            gap: 24px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-top: 64px;
+            flex-wrap: wrap;
         }
 
         .results-grid {
             display: grid;
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr;
+            gap: 48px;
+            margin-bottom: 64px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
 
         .result-category {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            text-align: left;
-            border-left: 5px solid #ddd;
-            transition: all 0.3s ease;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            text-align: center;
+            border: none;
+            transition: none;
+            backdrop-filter: none;
         }
 
-        .result-category:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-        }
 
-        .result-category.category-values {
-            border-left-color: #1565c0;
-        }
-
-        .result-category.category-planning {
-            border-left-color: #2e7d32;
-        }
-
-        .result-category.category-money {
-            border-left-color: #ef6c00;
-        }
-
-        .result-category.category-family {
-            border-left-color: #7b1fa2;
-        }
-
-        .result-category.category-emotion {
-            border-left-color: #c2185b;
-        }
 
         .result-category h3 {
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: 700;
+            margin-bottom: 32px;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 16px;
         }
 
         .result-category.category-values h3 {
             color: #1565c0;
+            border-bottom-color: rgba(21, 101, 192, 0.2);
         }
 
         .result-category.category-planning h3 {
             color: #2e7d32;
+            border-bottom-color: rgba(46, 125, 50, 0.2);
         }
 
         .result-category.category-money h3 {
             color: #ef6c00;
+            border-bottom-color: rgba(239, 108, 0, 0.2);
         }
 
         .result-category.category-family h3 {
             color: #7b1fa2;
+            border-bottom-color: rgba(123, 31, 162, 0.2);
         }
 
         .result-category.category-emotion h3 {
             color: #c2185b;
+            border-bottom-color: rgba(194, 24, 91, 0.2);
         }
 
+
         .result-question {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 3px solid #e9ecef;
+            margin-bottom: 24px;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            text-align: left;
         }
 
         .result-question:last-child {
@@ -643,47 +760,33 @@
         }
 
         .result-question-text {
-            font-weight: 600;
-            color: #333;
+            font-weight: 500;
+            color: #4a5568;
             margin-bottom: 8px;
-            line-height: 1.4;
+            line-height: 1.5;
+            font-size: 0.85rem;
         }
 
         .result-answer {
-            color: #666;
-            line-height: 1.4;
+            color: #2d3748;
+            line-height: 1.5;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .result-answer-label {
             display: inline-block;
-            background: #007bff;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
+            background: transparent;
+            color: #718096;
+            padding: 0;
+            border-radius: 0;
             font-size: 0.8rem;
             font-weight: 600;
-            margin-right: 8px;
+            margin-right: 12px;
+            min-width: auto;
+            text-align: left;
         }
 
-        .result-category.category-values .result-answer-label {
-            background: #1565c0;
-        }
-
-        .result-category.category-planning .result-answer-label {
-            background: #2e7d32;
-        }
-
-        .result-category.category-money .result-answer-label {
-            background: #ef6c00;
-        }
-
-        .result-category.category-family .result-answer-label {
-            background: #7b1fa2;
-        }
-
-        .result-category.category-emotion .result-answer-label {
-            background: #c2185b;
-        }
 
         .question-count {
             position: absolute;
@@ -698,16 +801,14 @@
         }
 
         @media (max-width: 768px) {
-            .quiz-container {
-                margin: 10px;
-            }
-
             .quiz-content {
-                padding: 25px;
+                padding: 40px 32px;
+                height: calc(100vh - 140px);
             }
 
             .quiz-header {
-                padding: 25px;
+                padding: 24px 32px;
+                height: 140px;
             }
 
             .quiz-title {
@@ -715,11 +816,85 @@
             }
 
             .question {
-                font-size: 1.1rem;
+                font-size: clamp(1.5rem, 6vw, 2.5rem);
+                margin-bottom: 40px;
+                padding: 0 16px;
             }
 
             .option {
-                padding: 12px 15px;
+                padding: 18px 20px;
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+
+            .option-label {
+                font-size: 0.85rem;
+                padding: 3px 6px;
+            }
+
+            .option-text {
+                font-size: 0.9rem;
+            }
+
+            .quiz-navigation {
+                padding: 0 20px;
+            }
+
+            .btn {
+                padding: 14px 24px;
+                font-size: 0.95rem;
+                min-width: 110px;
+            }
+
+            .start-screen {
+                max-width: 100%;
+                padding: 0 16px;
+            }
+
+            .results {
+                height: calc(100vh - 140px);
+                padding-bottom: 24px;
+            }
+
+            .results-grid {
+                gap: 32px;
+                padding: 0 16px;
+            }
+
+            .result-category {
+                padding: 0;
+            }
+
+            .result-category h3 {
+                font-size: 0.9rem;
+                margin-bottom: 24px;
+            }
+
+            .result-question {
+                padding: 0;
+                margin-bottom: 20px;
+            }
+
+            .result-question-text {
+                font-size: 0.85rem;
+            }
+
+            .result-answer {
+                font-size: 0.8rem;
+            }
+
+            .personality-analysis {
+                padding: 0;
+                margin-bottom: 48px;
+            }
+
+            .personality-category h4 {
+                font-size: 0.8rem;
+            }
+
+            .keyword-tag {
+                font-size: 0.85rem;
+                padding: 6px 0;
             }
         }
     </style>
@@ -762,12 +937,16 @@
             <!-- Results Screen -->
             <div id="resultsScreen" style="display: none;">
                 <div class="results">
-
+                    <h2>🎉 测试完成！</h2>
+                    <p class="results-subtitle">以下是你的答案和个性分析</p>
+                    
+                    <div id="personalityAnalysis" class="personality-analysis"></div>
+                    <div class="results-grid" id="resultsList"></div>
+                    
                     <div class="results-actions">
                         <button class="btn btn-secondary" onclick="exportResults()">保存我的答案</button>
                         <button class="btn btn-primary" onclick="restartQuiz()">再来一次</button>
                     </div>
-                    <div class="results-grid" id="resultsList"></div>
                 </div>
             </div>
         </div>
@@ -809,6 +988,11 @@
             currentCategoryIndex = 0;
             currentQuestionIndex = 0;
             document.body.classList.remove('start-screen-header');
+
+            // Show navigation buttons for quiz
+            const navigation = document.querySelector('.quiz-navigation');
+            navigation.style.display = 'flex';
+
             showQuestion();
         }
 
@@ -894,15 +1078,23 @@
         function updateNavigationButtons() {
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
+            const navigation = document.querySelector('.quiz-navigation');
 
-            prevBtn.disabled = currentCategoryIndex === 0 && currentQuestionIndex === 0;
+            const isFirstQuestion = currentCategoryIndex === 0 && currentQuestionIndex === 0;
+            const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
+                currentQuestionIndex === quizData[currentCategoryIndex].questions.length - 1;
 
-            // Remove the requirement to select an option before proceeding
+            // Handle first question - hide previous button
+            if (isFirstQuestion) {
+                prevBtn.style.visibility = 'hidden';
+            } else {
+                prevBtn.style.visibility = 'visible';
+            }
+
+            prevBtn.disabled = isFirstQuestion;
             nextBtn.disabled = false;
 
             // Update next button text
-            const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
-                currentQuestionIndex === quizData[currentCategoryIndex].questions.length - 1;
             nextBtn.textContent = isLastQuestion ? '查看我的结果' : '下一题';
         }
 
@@ -977,6 +1169,9 @@
             document.getElementById('resultsScreen').style.display = 'block';
             document.body.className = 'results-screen-header';
 
+            // Hide navigation buttons on results screen
+            const navigation = document.querySelector('.quiz-navigation');
+            navigation.style.display = 'none';
 
             const resultsList = document.getElementById('resultsList');
             resultsList.innerHTML = '';
@@ -1006,6 +1201,9 @@
                 resultsList.appendChild(categoryDiv);
             });
 
+            // Display personality analysis
+            displayPersonalityAnalysis();
+            
             updateProgress();
         }
 
@@ -1013,6 +1211,10 @@
             document.getElementById('resultsScreen').style.display = 'none';
             document.getElementById('startScreen').style.display = 'block';
             document.body.className = 'start-screen-header';
+
+            // Show navigation buttons again
+            const navigation = document.querySelector('.quiz-navigation');
+            navigation.style.display = 'flex';
 
             // Reset data
             currentCategoryIndex = 0;
@@ -1066,6 +1268,117 @@
                 '感情观': 'category-emotion'
             };
             return categoryMap[categoryName] || 'category-default';
+        }
+
+        // Personality analysis algorithm
+        function analyzePersonality() {
+            const analysis = {};
+
+            // 价值底色 Analysis
+            const valuesAnswers = Object.values(answers[0] || {});
+            const valuesKeywords = [];
+            
+            // Count A responses (more open/progressive)
+            const aCount = valuesAnswers.filter(a => a === 'A').length;
+            // Count B responses (moderate/adaptive)
+            const bCount = valuesAnswers.filter(a => a === 'B').length;
+            // Count C responses (conservative/traditional)
+            const cCount = valuesAnswers.filter(a => a === 'C').length;
+
+            if (aCount >= 3) {
+                valuesKeywords.push('开放包容', '积极进取', '自主创新');
+            } else if (bCount >= 2) {
+                valuesKeywords.push('理性务实', '适应性强', '平衡思维');
+            } else if (cCount >= 2) {
+                valuesKeywords.push('稳重传统', '谨慎保守', '现实导向');
+            }
+
+            // Add specific keywords based on individual answers
+            if (answers[0][0] === 'A') valuesKeywords.push('包容友善');
+            if (answers[0][1] === 'A') valuesKeywords.push('快乐至上');
+            if (answers[0][1] === 'B') valuesKeywords.push('成就导向');
+            if (answers[0][2] === 'B') valuesKeywords.push('个性自由');
+            if (answers[0][3] === 'B') valuesKeywords.push('自我掌控');
+            if (answers[0][4] === 'A') valuesKeywords.push('自信乐观');
+
+            analysis['价值底色'] = [...new Set(valuesKeywords)]; // Remove duplicates
+
+            // 人生规划 Analysis
+            const planningAnswers = Object.values(answers[1] || {});
+            const planningKeywords = [];
+
+            // Analyze financial freedom perspective
+            if (answers[1][0] === 'A') planningKeywords.push('事业驱动', '持续奋斗');
+            if (answers[1][0] === 'B') planningKeywords.push('风险意识', '安全为先');
+            if (answers[1][0] === 'C') planningKeywords.push('极简主义', '知足常乐');
+            if (answers[1][0] === 'D') planningKeywords.push('享受当下', '随性自由');
+
+            // Analyze career crisis response
+            if (answers[1][1] === 'A') planningKeywords.push('快速适应', '行动力强');
+            if (answers[1][1] === 'B') planningKeywords.push('稳定求职', '体制偏好');
+            if (answers[1][1] === 'C') planningKeywords.push('自由探索', '数字游民');
+            if (answers[1][1] === 'D') planningKeywords.push('追求梦想', '转型勇气');
+
+            // Analyze job preference
+            if (answers[1][2] === 'A') planningKeywords.push('稳定优先', '大企业偏好');
+            if (answers[1][2] === 'B') planningKeywords.push('高风险高回报', '创业精神');
+            if (answers[1][2] === 'C') planningKeywords.push('多元发展', '学习导向');
+
+            // Analyze adventure willingness
+            if (answers[1][3] === 'A') planningKeywords.push('冒险精神', '国际视野');
+            if (answers[1][3] === 'B') planningKeywords.push('安居乐业', '本土情结');
+
+            analysis['人生规划'] = [...new Set(planningKeywords)];
+
+            // 金钱观 Analysis
+            const moneyAnswers = Object.values(answers[2] || {});
+            const moneyKeywords = [];
+
+            // Analyze luxury spending attitude
+            if (answers[2][0] === 'A') moneyKeywords.push('精神富足', '支持型伴侣');
+            if (answers[2][0] === 'B') moneyKeywords.push('理性包容', '尊重差异');
+            if (answers[2][0] === 'C') moneyKeywords.push('实用主义', '理财顾问');
+
+            // Analyze saving attitude
+            if (answers[2][1] === 'A') moneyKeywords.push('未雨绸缪', '安全感重视');
+            if (answers[2][1] === 'B') moneyKeywords.push('平衡理财', '适度消费');
+            if (answers[2][1] === 'C') moneyKeywords.push('体验至上', '享乐主义');
+
+            // Analyze shared account preference
+            if (answers[2][2] === 'A') moneyKeywords.push('公平分担', '平等主义');
+            if (answers[2][2] === 'B') moneyKeywords.push('能力导向', '收入比例');
+            if (answers[2][2] === 'C') moneyKeywords.push('贡献平衡', '家务补偿');
+            if (answers[2][2] === 'D') moneyKeywords.push('经济独立', '个人自主');
+
+            // Analyze prenup attitude
+            if (answers[2][3] === 'A') moneyKeywords.push('理性务实', '风险管理');
+            if (answers[2][3] === 'B') moneyKeywords.push('感情至上', '信任为本');
+
+            analysis['金钱观'] = [...new Set(moneyKeywords)];
+
+            return analysis;
+        }
+
+        function displayPersonalityAnalysis() {
+            const analysis = analyzePersonality();
+            const analysisContainer = document.getElementById('personalityAnalysis');
+            
+            let analysisHTML = '';
+            
+            Object.entries(analysis).forEach(([category, keywords]) => {
+                if (keywords.length > 0) {
+                    analysisHTML += `
+                        <div class="personality-category">
+                            <h4>${category}</h4>
+                            <div class="personality-keywords">
+                                ${keywords.map(keyword => `<span class="keyword-tag">${keyword}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            analysisContainer.innerHTML = analysisHTML;
         }
 
         // Initialize the app
