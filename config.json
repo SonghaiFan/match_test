@@ -1,0 +1,87 @@
+{
+  "app": {
+    "title": "恋爱三观测试",
+    "subtitle": "了解你的价值观和人生态度",
+    "type": "personality-quiz",
+    "version": "1.0.0"
+  },
+  "ui": {
+    "startScreen": {
+      "title": "欢迎来到恋爱三观测试",
+      "description": [
+        "这里有5个类别，总共24道精心设计的问题等着你！",
+        "记住，没有标准答案，只有最真实的你！"
+      ],
+      "startButton": "开始"
+    },
+    "resultsScreen": {
+      "title": "测试结果",
+      "subtitle": "以下是你的答案",
+      "actions": {
+        "export": "保存我的答案",
+        "restart": "重新开始"
+      }
+    },
+    "navigation": {
+      "previous": "上一题",
+      "next": "下一题",
+      "finish": "查看结果"
+    },
+    "progress": {
+      "showLabels": true,
+      "showCounter": true,
+      "counterFormat": "{current} / {total}"
+    }
+  },
+  "theme": {
+    "categories": {
+      "价值底色": {
+        "id": "values",
+        "primaryColor": "#1565c0",
+        "secondaryColor": "#1976d2",
+        "lightColor": "#e3f2fd",
+        "backgroundColor": "#bbdefb"
+      },
+      "人生规划": {
+        "id": "planning",
+        "primaryColor": "#2e7d32",
+        "secondaryColor": "#388e3c",
+        "lightColor": "#e8f5e8",
+        "backgroundColor": "#c8e6c9"
+      },
+      "金钱观": {
+        "id": "money",
+        "primaryColor": "#ef6c00",
+        "secondaryColor": "#f57c00",
+        "lightColor": "#fff8e1",
+        "backgroundColor": "#ffecb3"
+      },
+      "家庭观": {
+        "id": "family",
+        "primaryColor": "#7b1fa2",
+        "secondaryColor": "#8e24aa",
+        "lightColor": "#f3e5f5",
+        "backgroundColor": "#e1bee7"
+      },
+      "感情观": {
+        "id": "emotion",
+        "primaryColor": "#c2185b",
+        "secondaryColor": "#d81b60",
+        "lightColor": "#fce4ec",
+        "backgroundColor": "#f8bbd9"
+      }
+    }
+  },
+
+  "export": {
+    "enabled": true,
+    "format": "txt",
+    "filename": "测试结果.txt",
+    "template": {
+      "header": "{title}结果\n\n",
+      "category": "{category}\n{separator}\n\n",
+      "question": "问题：{question}\n回答：{answer} - {answerText}\n\n",
+      "separator": "="
+    }
+  }
+}
