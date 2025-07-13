@@ -9,6 +9,37 @@ class QuizApp {
     this.engine = null;
     this.renderer = null;
     this.initialized = false;
+    this.testType = this.getTestTypeFromURL();
+  }
+
+  /**
+   * Parse URL parameters to determine test type
+   */
+  getTestTypeFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const testType = urlParams.get("test");
+
+    // If no test parameter provided, redirect to index
+    if (!testType) {
+      window.location.href = "index.html";
+      return null;
+    }
+
+    return testType;
+  }
+
+  /**
+   * Get configuration file name based on test type
+   */
+  getConfigFileName() {
+    return `config-${this.testType}.json`;
+  }
+
+  /**
+   * Get quiz data file name based on test type
+   */
+  getQuizDataFileName() {
+    return `quiz-${this.testType}.json`;
   }
 
   /**
@@ -16,6 +47,11 @@ class QuizApp {
    */
   async init() {
     try {
+      // If no test type (redirect case), don't initialize
+      if (!this.testType) {
+        return;
+      }
+
       // Load configuration and quiz data
       await this.loadConfiguration();
       await this.loadQuizData();
@@ -31,7 +67,9 @@ class QuizApp {
       await this.renderer.renderInitialUI();
 
       this.initialized = true;
-      console.log("Quiz Application initialized successfully");
+      console.log(
+        `Quiz Application initialized successfully with test type: ${this.testType}`
+      );
     } catch (error) {
       console.error("Failed to initialize quiz application:", error);
       this.handleInitializationError(error);
@@ -43,11 +81,15 @@ class QuizApp {
    */
   async loadConfiguration() {
     try {
-      const response = await fetch("config.json");
+      const configFile = this.getConfigFileName();
+      const response = await fetch(configFile);
       if (!response.ok) {
-        throw new Error(`Failed to load configuration: ${response.status}`);
+        throw new Error(
+          `Failed to load configuration: ${response.status} - ${configFile}`
+        );
       }
       this.config = await response.json();
+      console.log(`Loaded configuration from: ${configFile}`);
     } catch (error) {
       throw new Error(`Configuration loading failed: ${error.message}`);
     }
@@ -58,11 +100,15 @@ class QuizApp {
    */
   async loadQuizData() {
     try {
-      const response = await fetch("quiz.json");
+      const quizFile = this.getQuizDataFileName();
+      const response = await fetch(quizFile);
       if (!response.ok) {
-        throw new Error(`Failed to load quiz data: ${response.status}`);
+        throw new Error(
+          `Failed to load quiz data: ${response.status} - ${quizFile}`
+        );
       }
       this.quizData = await response.json();
+      console.log(`Loaded quiz data from: ${quizFile}`);
     } catch (error) {
       throw new Error(`Quiz data loading failed: ${error.message}`);
     }

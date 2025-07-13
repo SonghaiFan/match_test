@@ -1,0 +1,60 @@
+{
+  "app": {
+    "title": "职业兴趣测试",
+    "subtitle": "发现你的职业倾向"
+  },
+  "ui": {
+    "startScreen": {
+      "title": "探索你的职业方向",
+      "description": [
+        "这个测试将帮助你了解自己的职业兴趣和倾向。",
+        "通过分析你的工作偏好、技能优势和价值观，为你提供职业建议。",
+        "你可以自由浏览所有问题，无需全部回答即可查看结果。"
+      ],
+      "startButton": "开始测试"
+    },
+    "navigation": {
+      "nextButton": "下一题",
+      "prevButton": "上一题"
+    },
+    "results": {
+      "title": "测试结果",
+      "subtitle": "以下是你的职业兴趣测试结果",
+      "exportButton": "保存结果",
+      "restartButton": "重新测试"
+    }
+  },
+  "theme": {
+    "categories": {
+      "interests": {
+        "name": "兴趣偏好",
+        "color": "#3498db",
+        "description": "你感兴趣的工作领域和活动"
+      },
+      "skills": {
+        "name": "技能优势",
+        "color": "#2ecc71",
+        "description": "你擅长的能力和技能类型"
+      },
+      "workstyle": {
+        "name": "工作风格",
+        "color": "#e74c3c",
+        "description": "你偏好的工作环境和方式"
+      },
+      "values": {
+        "name": "价值观",
+        "color": "#f39c12",
+        "description": "对你来说重要的工作价值"
+      }
+    }
+  },
+  "export": {
+    "filename": "我的职业兴趣测试结果",
+    "template": {
+      "header": "=== {title} ===\n\n",
+      "category": "\n【{category}】\n{separator}\n",
+      "question": "问题：{question}\n答案：{answer}. {answerText}\n\n",
+      "separator": "="
+    }
+  }
+}

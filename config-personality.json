@@ -1,0 +1,65 @@
+{
+  "app": {
+    "title": "性格测试",
+    "subtitle": "探索你的个性特征"
+  },
+  "ui": {
+    "startScreen": {
+      "title": "开始你的性格测试",
+      "description": [
+        "这个测试将帮助你了解自己的性格特征。",
+        "测试包含多个维度，请根据真实感受作答。",
+        "你可以自由浏览所有问题，无需全部回答即可查看结果。"
+      ],
+      "startButton": "开始测试"
+    },
+    "navigation": {
+      "nextButton": "下一题",
+      "prevButton": "上一题"
+    },
+    "results": {
+      "title": "测试结果",
+      "subtitle": "以下是你的性格测试结果",
+      "exportButton": "保存结果",
+      "restartButton": "重新测试"
+    }
+  },
+  "theme": {
+    "categories": {
+      "extroversion": {
+        "name": "外向性",
+        "color": "#e74c3c",
+        "description": "你的社交倾向和活力水平"
+      },
+      "openness": {
+        "name": "开放性",
+        "color": "#3498db",
+        "description": "你对新体验和想法的接受程度"
+      },
+      "conscientiousness": {
+        "name": "责任感",
+        "color": "#2ecc71",
+        "description": "你的组织能力和自律性"
+      },
+      "agreeableness": {
+        "name": "亲和力",
+        "color": "#f39c12",
+        "description": "你的合作性和同理心"
+      },
+      "neuroticism": {
+        "name": "情绪稳定性",
+        "color": "#9b59b6",
+        "description": "你的情绪调节能力"
+      }
+    }
+  },
+  "export": {
+    "filename": "我的性格测试结果",
+    "template": {
+      "header": "=== {title} ===\n\n",
+      "category": "\n【{category}】\n{separator}\n",
+      "question": "问题：{question}\n答案：{answer}. {answerText}\n\n",
+      "separator": "="
+    }
+  }
+}

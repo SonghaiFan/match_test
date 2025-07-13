@@ -48,6 +48,7 @@ class QuizRenderer {
    * Render initial UI based on configuration
    */
   async renderInitialUI() {
+    this.injectDynamicStyles();
     this.renderHeader();
     this.renderStartScreen();
     this.renderNavigationButtons();
@@ -95,12 +96,12 @@ class QuizRenderer {
    */
   renderNavigationButtons() {
     if (this.elements.prevBtn) {
-      this.elements.prevBtn.textContent = this.config.ui.navigation.previous;
+      this.elements.prevBtn.textContent = this.config.ui.navigation.prevButton;
       this.elements.prevBtn.setAttribute("data-action", "prev-question");
     }
 
     if (this.elements.nextBtn) {
-      this.elements.nextBtn.textContent = this.config.ui.navigation.next;
+      this.elements.nextBtn.textContent = this.config.ui.navigation.nextButton;
       this.elements.nextBtn.setAttribute("data-action", "next-question");
     }
   }
@@ -110,24 +111,22 @@ class QuizRenderer {
    */
   renderResultsScreen() {
     if (this.elements.resultsTitle) {
-      this.elements.resultsTitle.textContent =
-        this.config.ui.resultsScreen.title;
+      this.elements.resultsTitle.textContent = this.config.ui.results.title;
     }
 
     if (this.elements.resultsSubtitle) {
       this.elements.resultsSubtitle.textContent =
-        this.config.ui.resultsScreen.subtitle;
+        this.config.ui.results.subtitle;
     }
 
     if (this.elements.exportBtn) {
-      this.elements.exportBtn.textContent =
-        this.config.ui.resultsScreen.actions.export;
+      this.elements.exportBtn.textContent = this.config.ui.results.exportButton;
       this.elements.exportBtn.setAttribute("data-action", "export-results");
     }
 
     if (this.elements.restartBtn) {
       this.elements.restartBtn.textContent =
-        this.config.ui.resultsScreen.actions.restart;
+        this.config.ui.results.restartButton;
       this.elements.restartBtn.setAttribute("data-action", "restart-quiz");
     }
   }
@@ -270,8 +269,8 @@ class QuizRenderer {
     if (this.elements.nextBtn) {
       this.elements.nextBtn.disabled = false; // Always allow navigation
       this.elements.nextBtn.textContent = state.isLastQuestion
-        ? this.config.ui.navigation.finish
-        : this.config.ui.navigation.next;
+        ? "查看结果"
+        : this.config.ui.navigation.nextButton;
     }
   }
 
@@ -337,7 +336,8 @@ class QuizRenderer {
    */
   updateQuestionCounter(counter) {
     if (this.elements.questionCount) {
-      const format = this.config.ui.progress.counterFormat;
+      const format =
+        this.config.ui.progress?.counterFormat || "{current} / {total}";
       this.elements.questionCount.textContent = format
         .replace("{current}", counter.current)
         .replace("{total}", counter.total);
@@ -396,18 +396,135 @@ class QuizRenderer {
   }
 
   /**
+   * Inject dynamic styles based on configuration
+   */
+  injectDynamicStyles() {
+    const style = document.createElement("style");
+    style.textContent = this.generateDynamicCSS();
+    document.head.appendChild(style);
+  }
+
+  /**
+   * Generate dynamic CSS based on configuration
+   */
+  generateDynamicCSS() {
+    let css = "";
+
+    // Generate styles for each category
+    Object.entries(this.config.theme.categories).forEach(([key, category]) => {
+      const categoryClass = this.getCategoryClass(key);
+      const segmentClass = this.getSegmentClass(key);
+
+      css += `
+        /* Category ${key} styles */
+        .${categoryClass} .quiz-header {
+          background: linear-gradient(135deg, ${category.color}20 0%, ${category.color}30 100%);
+          color: ${category.color};
+        }
+        
+        .${categoryClass} .category-info {
+          background: linear-gradient(135deg, ${category.color}20 0%, ${category.color}30 100%);
+        }
+        
+        .${categoryClass} .category-name {
+          color: ${category.color};
+        }
+        
+        .${categoryClass} .option.selected {
+          background: linear-gradient(135deg, ${category.color} 0%, ${category.color}dd 100%);
+          color: white;
+          border-color: ${category.color};
+        }
+        
+        .${categoryClass} .option.selected .option-label,
+        .${categoryClass} .option.selected .option-text {
+          color: white;
+        }
+        
+        .${categoryClass} .btn-primary {
+          background: ${category.color};
+        }
+        
+        .${categoryClass} .btn-primary:hover {
+          background: ${category.color}dd;
+        }
+        
+        .progress-segment.${segmentClass}.completed .progress-segment-fill {
+          background: ${category.color};
+        }
+        
+        .progress-segment.${segmentClass}.current .progress-segment-fill {
+          background: ${category.color}99;
+        }
+        
+        .result-category.${categoryClass} h3 {
+          color: ${category.color};
+        }
+        
+        .result-category.${categoryClass} h3::after {
+          background: linear-gradient(135deg, ${category.color} 0%, ${category.color}dd 100%);
+        }
+      `;
+    });
+
+    return css;
+  }
+
+  /**
    * Get category CSS class
    */
   getCategoryClass(categoryName) {
-    const theme = this.config.theme.categories[categoryName];
-    return theme ? `category-${theme.id}` : "category-default";
+    // Create a mapping for Chinese category names to simple class names
+    const categoryMapping = {
+      价值底色: "values",
+      人生规划: "planning",
+      金钱观: "money",
+      家庭观: "family",
+      感情观: "emotion",
+      情感表达: "emotion",
+      外向性: "extroversion",
+      开放性: "openness",
+      责任感: "conscientiousness",
+      亲和力: "agreeableness",
+      情绪稳定性: "neuroticism",
+      兴趣偏好: "interests",
+      技能优势: "skills",
+      工作风格: "workstyle",
+      价值观: "values",
+    };
+
+    const safeClassName =
+      categoryMapping[categoryName] ||
+      categoryName.toLowerCase().replace(/[^a-z0-9]/g, "-");
+    return `category-${safeClassName}`;
   }
 
   /**
    * Get segment CSS class
    */
   getSegmentClass(categoryName) {
-    const theme = this.config.theme.categories[categoryName];
-    return theme ? `segment-${theme.id}` : "segment-default";
+    // Create a mapping for Chinese category names to simple class names
+    const categoryMapping = {
+      价值底色: "values",
+      人生规划: "planning",
+      金钱观: "money",
+      家庭观: "family",
+      感情观: "emotion",
+      情感表达: "emotion",
+      外向性: "extroversion",
+      开放性: "openness",
+      责任感: "conscientiousness",
+      亲和力: "agreeableness",
+      情绪稳定性: "neuroticism",
+      兴趣偏好: "interests",
+      技能优势: "skills",
+      工作风格: "workstyle",
+      价值观: "values",
+    };
+
+    const safeClassName =
+      categoryMapping[categoryName] ||
+      categoryName.toLowerCase().replace(/[^a-z0-9]/g, "-");
+    return `segment-${safeClassName}`;
   }
 }
