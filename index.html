@@ -15,7 +15,7 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
           "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
           "微软雅黑", Arial, sans-serif;
-        background: linear-gradient(135deg, #fefefe 0%, #f8f9fa 100%);
+        background: linear-gradient(135deg, #f7f7f7 0%, #ececec 100%);
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -24,10 +24,10 @@
       }
 
       .container {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
         border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px rgba(60, 60, 60, 0.08);
         padding: 40px;
         text-align: center;
         max-width: 800px;
@@ -37,17 +37,17 @@
       h1 {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #2c3e50;
+        color: #222;
         margin-bottom: 16px;
-        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        background: none;
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: unset;
+        background-clip: unset;
       }
 
       .subtitle {
         font-size: 1.2rem;
-        color: #7f8c8d;
+        color: #888;
         margin-bottom: 40px;
         font-weight: 400;
       }
@@ -60,32 +60,33 @@
       }
 
       .test-card {
-        background: rgba(255, 255, 255, 0.7);
+        background: #fafbfc;
         border-radius: 16px;
         padding: 24px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
+        border: 1px solid #e0e0e0;
+        transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
         text-decoration: none;
         color: inherit;
         display: block;
+        box-shadow: 0 2px 8px rgba(80, 80, 80, 0.03);
       }
 
       .test-card:hover {
-        background: rgba(255, 255, 255, 0.9);
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        background: #f4f4f4;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(80, 80, 80, 0.08);
       }
 
       .test-card h3 {
         font-size: 1.4rem;
         font-weight: 600;
         margin-bottom: 12px;
-        color: #2c3e50;
+        color: #333;
       }
 
       .test-card p {
         font-size: 1rem;
-        color: #7f8c8d;
+        color: #888;
         line-height: 1.6;
         margin-bottom: 16px;
       }
@@ -93,58 +94,56 @@
       .test-card .btn {
         display: inline-block;
         padding: 12px 24px;
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        color: white;
+        background: #e0e0e0;
+        color: #333;
         border-radius: 8px;
         font-weight: 500;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: background 0.2s, color 0.2s;
+        border: none;
+        cursor: pointer;
       }
 
       .test-card:hover .btn {
-        background: linear-gradient(135deg, #2980b9 0%, #21618c 100%);
+        background: #bdbdbd;
+        color: #111;
       }
 
-      .test-card.personality .btn {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-      }
-
-      .test-card.career .btn {
-        background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-      }
-
+      .test-card.personality .btn,
+      .test-card.career .btn,
       .test-card.values .btn {
-        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        background: #e0e0e0;
+        color: #333;
       }
 
       .usage-info {
-        background: rgba(52, 152, 219, 0.1);
+        background: #f5f5f5;
         border-radius: 12px;
         padding: 20px;
         margin-top: 32px;
-        border: 1px solid rgba(52, 152, 219, 0.2);
+        border: 1px solid #e0e0e0;
       }
 
       .usage-info h4 {
-        color: #2980b9;
+        color: #444;
         margin-bottom: 12px;
         font-weight: 600;
       }
 
       .usage-info p {
-        color: #34495e;
+        color: #555;
         font-size: 0.9rem;
         line-height: 1.5;
       }
 
       .url-example {
-        background: rgba(0, 0, 0, 0.05);
+        background: #ededed;
         padding: 8px 12px;
         border-radius: 6px;
         font-family: monospace;
         font-size: 0.9rem;
         margin: 8px 0;
-        color: #2c3e50;
+        color: #444;
       }
 
       @media (max-width: 600px) {

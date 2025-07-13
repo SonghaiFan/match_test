@@ -106,56 +106,6 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       }
 
-      @keyframes heartBeat {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-
-        50% {
-          transform: scale(1.1);
-        }
-      }
-
-      @keyframes sparkle {
-        0%,
-        100% {
-          opacity: 0.4;
-          transform: rotate(0deg);
-        }
-
-        50% {
-          opacity: 0.8;
-          transform: rotate(180deg);
-        }
-      }
-
-      /* Category-specific header colors */
-      .category-values .quiz-header {
-        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-        color: #1565c0;
-      }
-
-      .category-planning .quiz-header {
-        background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
-        color: #2e7d32;
-      }
-
-      .category-money .quiz-header {
-        background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-        color: #ef6c00;
-      }
-
-      .category-family .quiz-header {
-        background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-        color: #7b1fa2;
-      }
-
-      .category-emotion .quiz-header {
-        background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
-        color: #c2185b;
-      }
-
       /* Light header for start and results screens */
       .start-screen-header .quiz-header,
       .results-screen-header .quiz-header {
@@ -174,30 +124,12 @@
         background-clip: text;
       }
 
-      @keyframes titleBounce {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-
-        50% {
-          transform: translateY(-5px);
-        }
-      }
-
       .quiz-subtitle {
         font-size: 1.1rem;
         opacity: 0.7;
         margin-bottom: 20px;
         font-weight: 400;
         letter-spacing: 0.01em;
-      }
-
-      .category-header {
-        font-size: 1.2rem;
-        font-weight: 600;
-        opacity: 0.95;
-        margin-bottom: 0;
       }
 
       .progress-container {
@@ -253,47 +185,6 @@
 
       .progress-segment.current .progress-segment-fill {
         background: rgba(0, 0, 0, 0.4);
-      }
-
-      /* Individual progress segment colors */
-      .progress-segment.segment-values.completed .progress-segment-fill {
-        background: #1565c0;
-      }
-
-      .progress-segment.segment-values.current .progress-segment-fill {
-        background: rgba(21, 101, 192, 0.6);
-      }
-
-      .progress-segment.segment-planning.completed .progress-segment-fill {
-        background: #2e7d32;
-      }
-
-      .progress-segment.segment-planning.current .progress-segment-fill {
-        background: rgba(46, 125, 50, 0.6);
-      }
-
-      .progress-segment.segment-money.completed .progress-segment-fill {
-        background: #ef6c00;
-      }
-
-      .progress-segment.segment-money.current .progress-segment-fill {
-        background: rgba(239, 108, 0, 0.6);
-      }
-
-      .progress-segment.segment-family.completed .progress-segment-fill {
-        background: #7b1fa2;
-      }
-
-      .progress-segment.segment-family.current .progress-segment-fill {
-        background: rgba(123, 31, 162, 0.6);
-      }
-
-      .progress-segment.segment-emotion.completed .progress-segment-fill {
-        background: #c2185b;
-      }
-
-      .progress-segment.segment-emotion.current .progress-segment-fill {
-        background: rgba(194, 24, 91, 0.6);
       }
 
       .progress-labels {
@@ -353,80 +244,6 @@
         font-weight: 400;
       }
 
-      .category-info {
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 30px;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-      }
-
-      .category-info::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.1;
-        border-radius: 15px;
-      }
-
-      /* Category color themes */
-      .category-values .category-info {
-        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-      }
-
-      .category-values .category-name {
-        color: #1565c0;
-      }
-
-      .category-values .category-info::before {
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="20">🌸</text></svg>');
-      }
-
-      .category-planning .category-info {
-        background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
-      }
-
-      .category-planning .category-name {
-        color: #2e7d32;
-      }
-
-      .category-money .category-info {
-        background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
-      }
-
-      .category-money .category-name {
-        color: #ef6c00;
-      }
-
-      .category-family .category-info {
-        background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
-      }
-
-      .category-family .category-name {
-        color: #7b1fa2;
-      }
-
-      .category-emotion .category-info {
-        background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
-      }
-
-      .category-emotion .category-name {
-        color: #c2185b;
-      }
-
-      .category-name {
-        font-size: 1.4rem;
-        font-weight: 700;
-        margin-bottom: 20px;
-        text-align: center;
-        position: relative;
-        z-index: 1;
-      }
-
       .question {
         font-size: clamp(2rem, 5vw, 4rem);
         font-weight: 700;
@@ -477,62 +294,6 @@
 
       .option:active {
         transform: scale(0.98);
-      }
-
-      /* Category-specific selected option colors */
-      .category-values .option.selected {
-        background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
-        color: white;
-        border-color: #1565c0;
-      }
-
-      .category-values .option.selected .option-label,
-      .category-values .option.selected .option-text {
-        color: white;
-      }
-
-      .category-planning .option.selected {
-        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
-        color: white;
-        border-color: #2e7d32;
-      }
-
-      .category-planning .option.selected .option-label,
-      .category-planning .option.selected .option-text {
-        color: white;
-      }
-
-      .category-money .option.selected {
-        background: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%);
-        color: white;
-        border-color: #efb300;
-      }
-
-      .category-money .option.selected .option-label,
-      .category-money .option.selected .option-text {
-        color: white;
-      }
-
-      .category-family .option.selected {
-        background: linear-gradient(135deg, #7b1fa2 0%, #8e24aa 100%);
-        color: white;
-        border-color: #7b1fa2;
-      }
-
-      .category-family .option.selected .option-label,
-      .category-family .option.selected .option-text {
-        color: white;
-      }
-
-      .category-emotion .option.selected {
-        background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
-        color: white;
-        border-color: #c2185b;
-      }
-
-      .category-emotion .option.selected .option-label,
-      .category-emotion .option.selected .option-text {
-        color: white;
       }
 
       .option-label {
@@ -587,27 +348,6 @@
         background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
         color: white;
         box-shadow: 0 4px 16px rgba(26, 32, 44, 0.25);
-      }
-
-      /* Category-specific button colors */
-      .category-values .btn-primary {
-        background: #1565c0;
-      }
-
-      .category-planning .btn-primary {
-        background: #2e7d32;
-      }
-
-      .category-money .btn-primary {
-        background: #ef6c00;
-      }
-
-      .category-family .btn-primary {
-        background: #7b1fa2;
-      }
-
-      .category-emotion .btn-primary {
-        background: #c2185b;
       }
 
       .btn-primary:hover {
@@ -718,46 +458,6 @@
         height: 3px;
         border-radius: 2px;
         background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
-      }
-
-      .result-category.category-values h3 {
-        color: #1565c0;
-      }
-
-      .result-category.category-values h3::after {
-        background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
-      }
-
-      .result-category.category-planning h3 {
-        color: #2e7d32;
-      }
-
-      .result-category.category-planning h3::after {
-        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
-      }
-
-      .result-category.category-money h3 {
-        color: #ef6c00;
-      }
-
-      .result-category.category-money h3::after {
-        background: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%);
-      }
-
-      .result-category.category-family h3 {
-        color: #7b1fa2;
-      }
-
-      .result-category.category-family h3::after {
-        background: linear-gradient(135deg, #7b1fa2 0%, #8e24aa 100%);
-      }
-
-      .result-category.category-emotion h3 {
-        color: #c2185b;
-      }
-
-      .result-category.category-emotion h3::after {
-        background: linear-gradient(135deg, #c2185b 0%, #d81b60 100%);
       }
 
       .result-question {
