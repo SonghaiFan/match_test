@@ -206,12 +206,24 @@ class QuizEngine {
 
       let status = "pending";
       let currentQuestionIndex = 0;
+      let maxQuestionReached = 0;
 
       if (categoryAnswered === categoryTotal) {
         status = "completed";
+        maxQuestionReached = categoryTotal - 1;
       } else if (index === this.currentCategoryIndex) {
         status = "current";
         currentQuestionIndex = this.currentQuestionIndex;
+        maxQuestionReached = this.currentQuestionIndex;
+      } else if (index < this.currentCategoryIndex) {
+        // For passed categories, find the highest question index that was reached
+        status = "passed";
+        const answeredQuestions = Object.keys(this.answers[index] || {}).map(
+          Number
+        );
+        if (answeredQuestions.length > 0) {
+          maxQuestionReached = Math.max(...answeredQuestions);
+        }
       }
 
       progress.push({
@@ -221,6 +233,7 @@ class QuizEngine {
         answered: categoryAnswered,
         total: categoryTotal,
         currentQuestionIndex: currentQuestionIndex,
+        maxQuestionReached: maxQuestionReached,
       });
     });
 

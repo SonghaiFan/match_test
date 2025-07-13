@@ -341,20 +341,24 @@ class QuizRenderer {
             ((item.currentQuestionIndex + 1) / item.total) * 100;
         }
 
-        // Store previous values for animation detection
-        const prevAnsweredWidth = answeredFill.style.width;
-        const prevStatus = segment.dataset.prevStatus;
-
-        // Gray fill shows background progress to current question position
+        // Gray fill shows background progress
         if (item.status === "current") {
+          // Current category: show progress to current question
           progressFill.style.width = currentProgressPercentage + "%";
           progressFill.style.left = "0%";
           progressFill.style.display = "block";
         } else if (item.status === "completed") {
+          // Completed category: show 100%
+          progressFill.style.width = "100%";
+          progressFill.style.left = "0%";
+          progressFill.style.display = "block";
+        } else if (item.status === "passed") {
+          // Passed category: show 100% (you went through entire category)
           progressFill.style.width = "100%";
           progressFill.style.left = "0%";
           progressFill.style.display = "block";
         } else {
+          // Future category: no gray fill
           progressFill.style.display = "none";
         }
 
@@ -364,15 +368,7 @@ class QuizRenderer {
         const segmentClass = this.getCategoryClass(item.category);
         segment.className = `progress-segment ${segmentClass} ${item.status}`;
 
-        // Add completion animation trigger
-        if (item.status === "completed" && prevStatus !== "completed") {
-          segment.classList.add("just-completed");
-          setTimeout(() => {
-            segment.classList.remove("just-completed");
-          }, 500);
-        }
-
-        // No animations needed
+        // Simple progress bar - no animations needed
 
         // Store current status for next comparison
         segment.dataset.prevStatus = item.status;
@@ -521,102 +517,24 @@ class QuizRenderer {
   generateDynamicCSS() {
     let css = "";
 
-    // Add base progress segment styles with animations
+    // Simple progress segment styles
     css += `
       .progress-segment {
         position: relative;
         overflow: hidden;
         background: #f5f5f5;
-        border-radius: 8px;
-        height: 8px;
-        transition: all 0.3s ease;
-      }
-      
-      .progress-segment:hover {
-        transform: scaleY(1.2);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 4px;
+        height: 6px;
       }
       
       .progress-segment-answered-fill,
       .progress-segment-progress-fill {
-        transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                    left 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                    opacity 0.3s ease;
-      }
-      
-      .progress-segment-answered-fill {
-        transform-origin: left center;
-        animation: fillGrow 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: width 0.3s ease;
       }
       
       .progress-segment-progress-fill {
-        opacity: 0.7;
         background: #e0e0e0;
       }
-      
-      @keyframes fillGrow {
-        0% {
-          width: 0% !important;
-          transform: scaleX(0);
-        }
-        50% {
-          transform: scaleX(1.05);
-        }
-        100% {
-          transform: scaleX(1);
-        }
-      }
-      
-      .progress-segment.current {
-        box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
-      }
-      
-      .progress-segment.completed {
-        animation: completedBounce 0.5s ease-out;
-      }
-      
-      .progress-segment.just-completed {
-        animation: justCompletedCelebration 0.5s ease-out;
-      }
-      
-
-      
-      @keyframes completedBounce {
-        0% {
-          transform: scaleY(1);
-        }
-        50% {
-          transform: scaleY(1.3);
-        }
-        100% {
-          transform: scaleY(1);
-        }
-      }
-      
-      @keyframes justCompletedCelebration {
-        0% {
-          transform: scale(1);
-          box-shadow: 0 0 0 rgba(34, 197, 94, 0.4);
-        }
-        25% {
-          transform: scale(1.05);
-          box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
-        }
-        50% {
-          transform: scale(1.1);
-          box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
-        }
-        75% {
-          transform: scale(1.02);
-          box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
-        }
-        100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 rgba(34, 197, 94, 0);
-        }
-      }
-      
-      
     `;
 
     // Generate styles for each category
