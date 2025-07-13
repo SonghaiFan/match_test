@@ -752,9 +752,9 @@
                     <div class="question" id="questionText"></div>
                     <ul class="options" id="optionsList"></ul>
                     <div class="quiz-navigation">
-                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>⬅️
+                        <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>
                             上一题</button>
-                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>下一题 ➡️</button>
+                        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>下一题</button>
                     </div>
                 </div>
             </div>
@@ -762,11 +762,10 @@
             <!-- Results Screen -->
             <div id="resultsScreen" style="display: none;">
                 <div class="results">
-                    <h2>🎊 哇！你完成了这场心灵探索之旅！🎊</h2>
-                    <p class="results-subtitle">✨ 以下是你的独特画像～每一个回答都展现了真实的你，太棒了！💖</p>
+
                     <div class="results-actions">
-                        <button class="btn btn-secondary" onclick="exportResults()">📄 保存我的答案</button>
-                        <button class="btn btn-primary" onclick="restartQuiz()">🔄 再来一次探索</button>
+                        <button class="btn btn-secondary" onclick="exportResults()">保存我的答案</button>
+                        <button class="btn btn-primary" onclick="restartQuiz()">再来一次</button>
                     </div>
                     <div class="results-grid" id="resultsList"></div>
                 </div>
@@ -904,7 +903,7 @@
             // Update next button text
             const isLastQuestion = currentCategoryIndex === quizData.length - 1 &&
                 currentQuestionIndex === quizData[currentCategoryIndex].questions.length - 1;
-            nextBtn.textContent = isLastQuestion ? '🎁 查看我的结果' : '下一题 ➡️';
+            nextBtn.textContent = isLastQuestion ? '查看我的结果' : '下一题';
         }
 
         function initializeProgressBar() {
