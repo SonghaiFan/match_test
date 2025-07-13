@@ -29,17 +29,10 @@ class QuizApp {
   }
 
   /**
-   * Get configuration file name based on test type
+   * Get test data file name based on test type
    */
-  getConfigFileName() {
-    return `config-${this.testType}.json`;
-  }
-
-  /**
-   * Get quiz data file name based on test type
-   */
-  getQuizDataFileName() {
-    return `quiz-${this.testType}.json`;
+  getTestDataFileName() {
+    return `test-${this.testType}.json`;
   }
 
   /**
@@ -52,9 +45,8 @@ class QuizApp {
         return;
       }
 
-      // Load configuration and quiz data
-      await this.loadConfiguration();
-      await this.loadQuizData();
+      // Load test data (combined config and questions)
+      await this.loadTestData();
 
       // Initialize components
       this.engine = new QuizEngine(this.quizData);
@@ -77,40 +69,32 @@ class QuizApp {
   }
 
   /**
-   * Load configuration from JSON file
+   * Load test data from combined JSON file
    */
-  async loadConfiguration() {
+  async loadTestData() {
     try {
-      const configFile = this.getConfigFileName();
-      const response = await fetch(configFile);
+      const testFile = this.getTestDataFileName();
+      const response = await fetch(testFile);
       if (!response.ok) {
         throw new Error(
-          `Failed to load configuration: ${response.status} - ${configFile}`
+          `Failed to load test data: ${response.status} - ${testFile}`
         );
       }
-      this.config = await response.json();
-      console.log(`Loaded configuration from: ${configFile}`);
-    } catch (error) {
-      throw new Error(`Configuration loading failed: ${error.message}`);
-    }
-  }
+      const testData = await response.json();
 
-  /**
-   * Load quiz data from JSON file
-   */
-  async loadQuizData() {
-    try {
-      const quizFile = this.getQuizDataFileName();
-      const response = await fetch(quizFile);
-      if (!response.ok) {
-        throw new Error(
-          `Failed to load quiz data: ${response.status} - ${quizFile}`
-        );
-      }
-      this.quizData = await response.json();
-      console.log(`Loaded quiz data from: ${quizFile}`);
+      // Extract config and quiz data from combined structure
+      this.config = {
+        app: testData.app,
+        ui: testData.ui,
+        theme: testData.theme,
+        export: testData.export,
+      };
+
+      this.quizData = testData.questions;
+
+      console.log(`Loaded test data from: ${testFile}`);
     } catch (error) {
-      throw new Error(`Quiz data loading failed: ${error.message}`);
+      throw new Error(`Test data loading failed: ${error.message}`);
     }
   }
 
